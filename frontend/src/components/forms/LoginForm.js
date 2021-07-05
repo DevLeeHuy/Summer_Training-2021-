@@ -1,25 +1,51 @@
 import React, { useState, useContext } from "react";
-import input from "../input_fields/input";
 import { UserContext } from "../contexts/UserContext";
+import userApi from "../../api/userApi";
+import { useHistory } from "react-router-dom";
 
 export default function LoginForm(props) {
-  const testContext = useContext(UserContext);
-  function loginFormSubmit(e) {
-    e.preventDefault();
-    testContext.setCurUser({
-      name: "tu",
-      pass: 1,
+  //Router
+  const history = useHistory();
+
+  //User Context
+  const userContext = useContext(UserContext);
+
+  //Local state
+  const [postData, setPostData] = useState({});
+
+  function handleChange(e) {
+    setPostData({
+      ...postData,
+      [e.target.name]: e.target.value,
     });
+  }
+
+  async function loginFormSubmit(e) {
+    e.preventDefault();
+    try {
+      const res = await userApi.login(postData);
+      if (res.success) {
+        userContext.setCurUser(res.user); //Set user in context & local storage
+        history.push("/"); //Go to homepage after login successfully
+      }
+    } catch (err) {
+      if (err.res) {
+        console.log(err.res.message);
+      } else {
+        console.log("Something was wrong🥲🥲" + err.message);
+      }
+    }
   }
   return (
     <form className="login-form" onSubmit={loginFormSubmit} method="post">
-      {/* Email input */}
+      {/* Username input */}
       <div className="form-outline mb-4">
         <input
           type="text"
           id="form2Example1"
           className="form-control"
           name="username"
+          onChange={handleChange}
         />
         <label className="form-label" htmlFor="form2Example1">
           User name
@@ -32,6 +58,7 @@ export default function LoginForm(props) {
           id="form2Example2"
           className="form-control"
           name="password"
+          onChange={handleChange}
         />
         <label className="form-label" htmlFor="form2Example2">
           Password

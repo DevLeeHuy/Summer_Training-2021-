@@ -26,7 +26,6 @@ export default function Signin_signup() {
     page === 0 && setPage(1);
   };
 
-  function handleLoginClick(body) {}
   return (
     <div
       className="account-container container w-25 mt-4"

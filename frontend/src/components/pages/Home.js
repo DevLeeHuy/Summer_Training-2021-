@@ -3,11 +3,31 @@ import { useEffect, useState } from "react";
 import productApi from "../../api/productApi";
 import SearchForm from "../forms/SearchForm";
 import ProductList from "../models/ProductList";
+import Pagination from "../partials/Pagination";
+
+const PAGE_SIZE = 6;
 
 export default function Home(props) {
   const [productList, setProductList] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [numOfPages, setNumOfPages] = useState(1);
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: PAGE_SIZE,
+  });
 
+  //Load all product to calculate number of pages
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await productApi.getAll();
+        setNumOfPages(Math.ceil(response.length / PAGE_SIZE));
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
+
+  //Load product list by filter(page, search...)
   useEffect(() => {
     (async () => {
       try {
@@ -27,6 +47,10 @@ export default function Home(props) {
     setFilters({ ...filters });
   }
 
+  function handleChangePage(curPage) {
+    setFilters({ ...filters, page: curPage });
+  }
+
   return (
     <div className="content row gx-0 mt-3">
       <div className="col-2"></div>
@@ -42,6 +66,9 @@ export default function Home(props) {
         </div>
         <div className="product-container ">
           <ProductList productList={productList} />
+        </div>
+        <div className="pagination d-flex justify-content-end p-4 ">
+          <Pagination onPageChange={handleChangePage} numOfPages={numOfPages} />
         </div>
       </div>
     </div>

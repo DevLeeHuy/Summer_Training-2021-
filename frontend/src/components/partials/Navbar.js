@@ -48,7 +48,7 @@ export default function Navbar() {
             </li>
           </ul> */}
         </div>
-        {userContext.user.name ? (
+        {userContext.user ? (
           <div className="d-flex align-items-center">
             <a className="text-reset me-3" href="/">
               <i className="fas fa-shopping-cart" />

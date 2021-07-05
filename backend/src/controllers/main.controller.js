@@ -36,9 +36,14 @@ module.exports = {
     try {
       const isUser = await User.find(user);
       if (isUser.length) {
-        res.status(200).json(isUser);
+        return res.status(200).json({ success: true, user: isUser });
       } else {
-        res.status(400).json({ success: false });
+        return res
+          .status(200)
+          .json({
+            success: false,
+            message: " username or password was wrong❌❌",
+          });
       }
     } catch (err) {
       res.status(400).json({ message: err.message });
