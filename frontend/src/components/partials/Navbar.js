@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 
 export default function Navbar() {
-  const userContext = useContext(UserContext);
+  const { user, unSetCurUser } = useContext(UserContext);
+  const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
   function handleLogoutClick() {
-    userContext.unSetCurUser();
+    unSetCurUser();
   }
   return (
     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
@@ -48,11 +49,14 @@ export default function Navbar() {
             </li>
           </ul> */}
         </div>
-        {userContext.user ? (
+        {user ? (
           <div className="d-flex align-items-center">
-            <a className="text-reset me-3" href="/">
+            <Link className="text-reset me-3" to="/shopping-cart">
               <i className="fas fa-shopping-cart" />
-            </a>
+              <span className="badge rounded-pill badge-notification bg-danger">
+                {user.cart.length}
+              </span>
+            </Link>
             <a
               className="text-reset me-3 dropdown-toggle hidden-arrow"
               href="/"
@@ -95,10 +99,10 @@ export default function Navbar() {
               aria-expanded="false"
             >
               <img
-                src="https://mdbootstrap.com/img/new/avatars/2.jpg"
+                src={IMG_URL + user.picture}
                 className="rounded-circle"
                 height={25}
-                alt=""
+                alt="avatar"
                 loading="lazy"
               />
             </a>

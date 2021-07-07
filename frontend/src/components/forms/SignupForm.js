@@ -1,14 +1,59 @@
-import React from "react";
-import input from "../input_fields/input";
+import React, { useState } from "react";
+import userApi from "../../api/userApi";
+import $ from "jquery";
 
 export default function SignupForm() {
+  const [formData, setFormData] = useState({});
+  function onInputChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  }
+  function onFileChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.files[0],
+    });
+  }
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const postData = new FormData();
+    for (let key in formData) {
+      postData.append(key, formData[key]);
+    }
+    try {
+      const response = await userApi.register(postData);
+      if (response.success) {
+        $(".alert-success").fadeIn();
+        setTimeout(() => {
+          $(".alert-success").fadeOut();
+        }, 3000);
+      }
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data.message);
+      } else console.log("Something was wrong🥲🥲" + err.message);
+    }
+  }
+
   return (
-    <form>
+    <form
+      onSubmit={handleFormSubmit}
+      encType="multipart/form-data"
+      className="text-center "
+    >
       {/* 2 column grid layout with text inputs for the first and last names */}
       <div className="row mb-4">
         <div className="col">
           <div className="form-outline">
-            <input type="text" id="form3Example1" className="form-control" />
+            <input
+              type="text"
+              id="form3Example1"
+              className="form-control"
+              name="firstname"
+              onChange={onInputChange}
+            />
             <label className="form-label" htmlFor="form3Example1">
               First name
             </label>
@@ -16,7 +61,13 @@ export default function SignupForm() {
         </div>
         <div className="col">
           <div className="form-outline">
-            <input type="text" id="form3Example2" className="form-control" />
+            <input
+              type="text"
+              id="form3Example2"
+              className="form-control"
+              name="lastname"
+              onChange={onInputChange}
+            />
             <label className="form-label" htmlFor="form3Example2">
               Last name
             </label>
@@ -25,20 +76,71 @@ export default function SignupForm() {
       </div>
       {/* Email input */}
       <div className="form-outline mb-4">
-        <input type="email" id="form3Example3" className="form-control" />
+        <input
+          type="email"
+          id="form3Example3"
+          className="form-control"
+          name="email"
+          onChange={onInputChange}
+        />
         <label className="form-label" htmlFor="form3Example3">
           Email address
         </label>
       </div>
+      {/* Phone input */}
+      <div className="form-outline mb-4">
+        <input
+          type="number"
+          id="form3Example3"
+          className="form-control"
+          name="phone"
+          onChange={onInputChange}
+        />
+        <label className="form-label" htmlFor="form3Example3">
+          Phone Number
+        </label>
+      </div>
+
+      {/* User input */}
+      <div className="form-outline">
+        <input
+          type="text"
+          id="formControlLg"
+          name="username"
+          className="form-control form-control-lg"
+          onChange={onInputChange}
+        />
+        <label className="form-label" htmlFor="formControlLg">
+          Username
+        </label>
+      </div>
       {/* Password input */}
       <div className="form-outline mb-4">
-        <input type="password" id="form3Example4" className="form-control" />
+        <input
+          type="password"
+          id="form3Example4"
+          className="form-control"
+          name="password"
+          onChange={onInputChange}
+        />
         <label className="form-label" htmlFor="form3Example4">
           Password
         </label>
       </div>
+      {/* Picture upload */}
+      <div className="form-group">
+        <label className="form-label" htmlFor="customFile">
+          You can add your profile picture here📷
+        </label>
+        <input
+          type="file"
+          className="form-control"
+          name="picture"
+          onChange={onFileChange}
+        />
+      </div>
       {/* Checkbox */}
-      <div className="form-check d-flex justify-content-center mb-4">
+      <div className="form-check d-flex justify-content-center m-4">
         <input
           className="form-check-input me-2"
           type="checkbox"
@@ -50,6 +152,16 @@ export default function SignupForm() {
           Subscribe to our newsletter
         </label>
       </div>
+      {/* success alert */}
+
+      <div
+        className="alert alert-success position-absolute top-50 start-50 translate-middle text-center "
+        style={{ display: "none" }}
+        role="alert"
+      >
+        ✅✅Register successfully🙋‍♂️🙋‍♂️
+      </div>
+
       {/* Submit button */}
       <button type="submit" className="btn btn-primary btn-block mb-4">
         Sign up

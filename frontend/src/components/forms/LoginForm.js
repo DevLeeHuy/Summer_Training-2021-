@@ -2,16 +2,20 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import userApi from "../../api/userApi";
 import { useHistory } from "react-router-dom";
+import $ from "jquery";
 
 export default function LoginForm(props) {
   //Router
   const history = useHistory();
 
   //User Context
-  const userContext = useContext(UserContext);
+  const { setCurUser } = useContext(UserContext);
 
   //Local state
   const [postData, setPostData] = useState({});
+
+  //Error Messages
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleChange(e) {
     setPostData({
@@ -23,17 +27,16 @@ export default function LoginForm(props) {
   async function loginFormSubmit(e) {
     e.preventDefault();
     try {
-      const res = await userApi.login(postData);
-      if (res.success) {
-        userContext.setCurUser(res.user); //Set user in context & local storage
+      const response = await userApi.login(postData);
+      if (response.success) {
+        setCurUser(response.user); //Set user in context & local storage
         history.push("/"); //Go to homepage after login successfully
+      } else {
+        setErrorMessage(response.message);
+        $(".error-message").fadeIn();
       }
     } catch (err) {
-      if (err.res) {
-        console.log(err.res.message);
-      } else {
-        console.log("Something was wrong🥲🥲" + err.message);
-      }
+      console.log(err.res.message);
     }
   }
   return (
@@ -63,6 +66,15 @@ export default function LoginForm(props) {
         <label className="form-label" htmlFor="form2Example2">
           Password
         </label>
+      </div>
+      {/* Error Messages */}
+      <div
+        className="alert alert-danger error-message text-center"
+        style={{ display: "none" }}
+        role="alert"
+      >
+        <i className="fas fa-exclamation-circle"></i>
+        {errorMessage}
       </div>
       {/* 2 column grid layout for inline styling */}
       <div className="row mb-4">

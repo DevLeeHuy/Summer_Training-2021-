@@ -14,7 +14,7 @@ module.exports = {
 
   //Sign in - sign up ✅⛔
   register: async function (req, res) {
-    const user = req.body;
+    const user = { ...req.body, picture: req.file.filename };
     if (!user.username || !user.password) {
       return res
         .status(400)
@@ -26,7 +26,7 @@ module.exports = {
         return res.status(400).json({ message: "Existing username" });
       const newUser = new User(user);
       await newUser.save();
-      res.status(200).json(newUser);
+      res.status(200).json({ success: true, user: newUser });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
@@ -34,16 +34,14 @@ module.exports = {
   login: async function (req, res) {
     const user = req.body;
     try {
-      const isUser = await User.find(user);
-      if (isUser.length) {
+      const isUser = await User.findOne(user);
+      if (isUser) {
         return res.status(200).json({ success: true, user: isUser });
       } else {
-        return res
-          .status(200)
-          .json({
-            success: false,
-            message: " username or password was wrong❌❌",
-          });
+        return res.status(200).json({
+          success: false,
+          message: " Username or password was wrong.",
+        });
       }
     } catch (err) {
       res.status(400).json({ message: err.message });
@@ -51,6 +49,41 @@ module.exports = {
   },
   logout: async function (req, res) {
     res.status(200).json("listProduct");
+  },
+
+  //Add to cart 🛒
+  shoppingCart: async function (req, res) {
+    try {
+      const user = await User.findById(req.query.userId).populate({
+        path: "cart",
+        populate: "product",
+      });
+      const product = req.query.productId;
+      const quantity = +req.query.quantity || 1;
+      const action = req.query.action;
+      const existedProduct = user.cart.find(
+        (element) => element.product._id.toString() === product
+      );
+
+      if (action !== "get") {
+        if (action === "update") {
+          if (existedProduct) existedProduct.quantity = quantity;
+        } else if (action === "remove") {
+          if (existedProduct)
+            user.cart.splice(user.cart.indexOf(existedProduct), 1);
+        } else {
+          if (existedProduct) {
+            existedProduct.quantity += quantity;
+          } else {
+            user.cart.push({ product, quantity });
+          }
+        }
+        await user.save();
+      }
+      res.status(200).json({ success: true, cart: user.cart });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
   },
 
   //Check out🤑

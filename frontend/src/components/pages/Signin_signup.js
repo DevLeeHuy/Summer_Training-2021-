@@ -28,7 +28,7 @@ export default function Signin_signup() {
 
   return (
     <div
-      className="account-container container w-25 mt-4"
+      className="account-container container w-25 mt-4 position-relative"
       style={{ height: "800px" }}
     >
       <h1>Sign in / sign up FUNCTION</h1>
