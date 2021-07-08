@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 
 export default function Navbar() {
   const { user, unSetCurUser } = useContext(UserContext);
+  const { shoppingCart } = useContext(CartContext);
   const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
   function handleLogoutClick() {
     unSetCurUser();
@@ -49,12 +51,12 @@ export default function Navbar() {
             </li>
           </ul> */}
         </div>
-        {user ? (
+        {user._id ? (
           <div className="d-flex align-items-center">
             <Link className="text-reset me-3" to="/shopping-cart">
               <i className="fas fa-shopping-cart" />
               <span className="badge rounded-pill badge-notification bg-danger">
-                {user.cart.length}
+                {shoppingCart.length}
               </span>
             </Link>
             <a

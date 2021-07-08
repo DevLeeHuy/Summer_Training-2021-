@@ -10,4 +10,7 @@ export default Object.assign({
   shoppingCart: function (params) {
     return axiosClient.get("/cart", { params });
   },
+  favorite_list: function (params) {
+    return axiosClient.get("/favorite_list", { params });
+  },
 });

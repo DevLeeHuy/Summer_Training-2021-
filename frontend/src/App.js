@@ -4,6 +4,7 @@ import Navbar from "./components/partials/Navbar";
 import Footer from "./components/partials/Footer";
 import UserContextProvider from "./components/contexts/UserContext";
 import CartContextProvider from "./components/contexts/CartContext";
+import ProductListContextProvider from "./components/contexts/ProductListContext";
 
 function App() {
   return (
@@ -11,9 +12,11 @@ function App() {
       <div className="App">
         <UserContextProvider>
           <CartContextProvider>
-            <Navbar />
-            <Browser />
-            <Footer />
+            <ProductListContextProvider>
+              <Navbar />
+              <Browser />
+              <Footer />
+            </ProductListContextProvider>
           </CartContextProvider>
         </UserContextProvider>
       </div>

@@ -3,7 +3,7 @@ import CartList from "../models/CartList";
 import { CartContext } from "../contexts/CartContext";
 
 export default function ShoppingCart() {
-  const { shoppingCart } = useContext(CartContext);
+  const { shoppingCart, totalCost } = useContext(CartContext);
 
   return (
     <div className="cart-container container mt-4">
@@ -80,7 +80,7 @@ export default function ShoppingCart() {
                     </strong>
                   </div>
                   <span>
-                    <strong>$53.98</strong>
+                    <strong>${totalCost}</strong>
                   </span>
                 </li>
               </ul>

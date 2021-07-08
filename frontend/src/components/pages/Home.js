@@ -1,44 +1,12 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import productApi from "../../api/productApi";
+import React, { useContext } from "react";
+import { ProductListContext } from "../contexts/ProductListContext";
 import SearchForm from "../forms/SearchForm";
 import ProductList from "../models/ProductList";
 import Pagination from "../partials/Pagination";
 
-const PAGE_SIZE = 6;
-
 export default function Home(props) {
-  const [productList, setProductList] = useState([]);
-  const [numOfPages, setNumOfPages] = useState(1);
-  const [filters, setFilters] = useState({
-    page: 1,
-    limit: PAGE_SIZE,
-  });
-
-  //Load all product to calculate number of pages
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await productApi.getAll();
-        setNumOfPages(Math.ceil(response.length / PAGE_SIZE));
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
-
-  //Load product list by filter(page, search...)
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await productApi.getProducts(filters);
-        setProductList(response);
-      } catch (err) {
-        console.log(err);
-      }
-    })(); //Filter change (search products, )
-  }, [filters]); //filter products
-
+  const { filters, setFilters, productList, numOfPages } =
+    useContext(ProductListContext);
   function handleSearchClick(text) {
     if (text) setFilters({ ...filters, name: text });
   }

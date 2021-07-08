@@ -35,12 +35,7 @@ export default function Pagination({ onPageChange, numOfPages }) {
             </li>
           </div>
         ))}
-        {/* <li className={"page-item " + (page === 2 && "active")}>
-          <button className="page-link page-number">2</button>
-        </li>
-        <li className={"page-item " + (page === 3 && "active")}>
-          <button className="page-link page-number">3</button>
-        </li> */}
+
         <li className={"page-item " + (page >= numOfPages && "disabled")}>
           <button className="page-link" onClick={handleNextPage}>
             Next
