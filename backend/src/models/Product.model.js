@@ -9,7 +9,7 @@ const rating = new schema({
 const Product = new schema(
   {
     name: { type: String },
-    category: { type: String },
+    category: { type: Object },
     description: { type: String },
     image: { type: String },
     price: { type: Number },

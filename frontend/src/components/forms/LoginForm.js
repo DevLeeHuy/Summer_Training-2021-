@@ -17,6 +17,9 @@ export default function LoginForm(props) {
   //Error Messages
   const [errorMessage, setErrorMessage] = useState("");
 
+  //Login pending sign
+  const [loading, setLoading] = useState(false);
+
   function handleChange(e) {
     setPostData({
       ...postData,
@@ -26,6 +29,7 @@ export default function LoginForm(props) {
 
   async function loginFormSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await userApi.login(postData);
       if (response.success) {
@@ -38,6 +42,7 @@ export default function LoginForm(props) {
     } catch (err) {
       console.log(err.res.message);
     }
+    setLoading(false);
   }
   return (
     <form className="login-form" onSubmit={loginFormSubmit} method="post">
@@ -101,7 +106,13 @@ export default function LoginForm(props) {
       </div>
       {/* Submit button */}
       <button type="submit" className="btn btn-primary btn-block mb-4">
-        Sign in
+        {loading ? (
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          <>Sign in</>
+        )}
       </button>
       {/* Register buttons */}
       <div className="text-center">

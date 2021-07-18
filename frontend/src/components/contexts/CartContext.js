@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import cartApi from "../../api/cartApi";
+import productApi from "../../api/productApi";
 import userApi from "../../api/userApi";
 import { UserContext } from "./UserContext";
 
@@ -7,14 +8,16 @@ export const CartContext = createContext();
 
 export default function CartContextProvider(props) {
   const { user } = useContext(UserContext);
+
   const [shoppingCart, setShoppingCart] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
+
+  //Get cart by userId
   useEffect(() => {
     (async () => {
       if (user._id) {
         const response = await userApi.shoppingCart({
           userId: user._id,
-          action: "get",
         });
         if (response.success) {
           setShoppingCart(response.cart);
@@ -26,17 +29,36 @@ export default function CartContextProvider(props) {
     };
   }, [user._id]);
 
+  //Update total cost when changing quantity
   useEffect(() => {
-    if (shoppingCart.length > 0)
+    if (shoppingCart.length > 0) {
       setTotalCost(
-        shoppingCart.reduce(
-          (acc, item) => (acc += item.product.price * item.quantity),
-          0
-        )
+        shoppingCart.reduce((acc, item) => {
+          if (item.checked) return (acc += item.product.price * item.quantity);
+          return acc;
+        }, 0)
       );
+    }
   }, [shoppingCart]);
 
-  const updateQuantity = async (productId, quantity) => {
+  const addToCart = async (productId, quantity = 1) => {
+    const newCart = [...shoppingCart];
+    const item = await productApi.getById(productId);
+    const existedItem = newCart.find((e) => e.product._id === item._id);
+    if (existedItem) {
+      existedItem.quantity += quantity;
+    } else {
+      newCart.push({ product: item, quantity });
+    }
+    setShoppingCart(newCart);
+    return cartApi.add({
+      userId: user._id,
+      productId,
+      quantity,
+    });
+  };
+
+  const updateQuantity = (productId, quantity = 1) => {
     const newCart = [...shoppingCart];
     newCart.forEach((ele) => {
       if (ele.product._id === productId) {
@@ -44,31 +66,38 @@ export default function CartContextProvider(props) {
       }
     });
     setShoppingCart(newCart);
-    await cartApi.handle({
+    return cartApi.update({
       userId: user._id,
-      productId: productId,
+      productId,
       quantity,
-      action: "update",
     });
   };
 
-  const removeItem = async (productId) => {
+  const removeItem = (productId) => {
     const newCart = [...shoppingCart];
     const item = newCart.find((e) => e.product._id.toString() === productId);
 
     newCart.splice(newCart.indexOf(item), 1);
     setShoppingCart(newCart);
-    await cartApi.handle({
+    return cartApi.delete({
       userId: user._id,
-      productId: productId,
-      action: "remove",
+      productId,
     });
+  };
+
+  const makeDecision = (productId, checked) => {
+    const newCart = [...shoppingCart];
+    const item = newCart.find((e) => e.product._id.toString() === productId);
+    item.checked = checked;
+    setShoppingCart(newCart);
   };
 
   const shoppingCartData = {
     shoppingCart,
+    addToCart,
     updateQuantity,
     removeItem,
+    makeDecision,
     totalCost,
   };
 

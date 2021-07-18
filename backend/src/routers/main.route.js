@@ -9,7 +9,6 @@ router.get("/logout", mainCtrl.logout);
 router.post("/checkout", mainCtrl.checkout);
 router.get("/favorite_list", mainCtrl.FavoriteList);
 router.get("/rating", mainCtrl.rating);
-router.get("/cart", mainCtrl.shoppingCart);
 router.get("/", mainCtrl.index);
 
 module.exports = router;

@@ -1,15 +1,43 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import CartList from "../models/CartList";
 import { CartContext } from "../contexts/CartContext";
+import Confirm from "../forms/Confirm";
+import { UserContext } from "../contexts/UserContext";
+import userApi from "../../api/userApi";
+import { useHistory } from "react-router-dom";
+
+import $ from "jquery";
 
 export default function ShoppingCart() {
   const { shoppingCart, totalCost } = useContext(CartContext);
+  const { user } = useContext(UserContext);
+  const [pending, setPending] = useState(false);
+  const history = useHistory();
+
+  function handleCheckout() {
+    setPending(true);
+
+    const listProduct = JSON.stringify(
+      shoppingCart.filter((e) => e.checked === true)
+    );
+    const userId = user._id;
+    userApi
+      .checkout({ listProduct, userId })
+      .then((response) => {
+        $(".modal-backdrop").hide();
+        setPending(false);
+        history.push("/bill-detail", { bill: response.bill });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 
   return (
     <div className="cart-container container mt-4">
       <div className="row  ">
         {/*Grid column*/}
-        <div className="col-lg-8">
+        <div className="col-lg-9">
           {/* Cart list */}
           <div className="card wish-list mb-3">
             <CartList cart={shoppingCart} />
@@ -58,7 +86,7 @@ export default function ShoppingCart() {
         </div>
         {/*Grid column*/}
         {/*Grid column*/}
-        <div className="col-lg-4">
+        <div className="col-lg-3">
           {/* Card */}
           <div className="card mb-3">
             <div className="card-body">
@@ -80,35 +108,33 @@ export default function ShoppingCart() {
                     </strong>
                   </div>
                   <span>
-                    <strong>${totalCost}</strong>
+                    <strong>${totalCost.toFixed(2)}</strong>
                   </span>
                 </li>
               </ul>
               <button
                 type="button"
                 className="btn btn-primary btn-block waves-effect waves-light"
+                data-mdb-toggle="modal"
+                data-mdb-target="#checkoutConfirm"
               >
-                go to checkout
+                checkout
               </button>
+              <Confirm
+                id="checkoutConfirm"
+                confirm={handleCheckout}
+                pending={pending}
+              />
             </div>
           </div>
           {/* Card */}
           {/* Card */}
           <div className="card mb-3">
             <div className="card-body">
-              <a
-                className="dark-grey-text d-flex justify-content-between"
-                data-toggle="collapse"
-                href="#collapseExample1"
-                aria-expanded="false"
-                aria-controls="collapseExample1"
-              >
+              <strong className="dark-grey-text d-flex justify-content-between">
                 Add a discount code (optional)
-                <span>
-                  <i className="fas fa-chevron-down pt-1" />
-                </span>
-              </a>
-              <div className="collapse" id="collapseExample1">
+              </strong>
+              <div className="" id="discount">
                 <div className="mt-3">
                   <div className="md-form md-outline mb-0">
                     <input

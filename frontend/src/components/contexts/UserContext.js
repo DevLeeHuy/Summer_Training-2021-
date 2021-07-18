@@ -15,28 +15,26 @@ export default function UserContextProvider(props) {
     localStorage.removeItem("user");
     setUser({});
   }
-  async function addToFavoriteList(productId) {
+  function addToFavoriteList(productId) {
     const tempUser = { ...user };
     !tempUser.favorite_list.find((e) => e === productId) &&
       tempUser.favorite_list.push(productId); //Push new item if it isn't already existed
     setCurUser(tempUser);
-    await userApi.favorite_list({
+    userApi.favorite_list({
       action: "add",
       productId,
       userId: user._id,
     });
-    console.log("like");
   }
-  async function removeFromFavoriteList(productId) {
+  function removeFromFavoriteList(productId) {
     const tempUser = { ...user };
     tempUser.favorite_list.splice(tempUser.favorite_list.indexOf(productId), 1);
     setCurUser(tempUser);
-    await userApi.favorite_list({
+    userApi.favorite_list({
       action: "remove",
       productId,
       userId: user._id,
     });
-    console.log("unlike");
   }
   const userContextData = {
     user,

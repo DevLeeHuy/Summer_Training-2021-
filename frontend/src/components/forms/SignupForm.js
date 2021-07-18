@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import userApi from "../../api/userApi";
 import $ from "jquery";
 
-export default function SignupForm() {
+export default function SignupForm({ onRegisterSuccess }) {
   const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
   function onInputChange(e) {
     setFormData({
       ...formData,
@@ -18,6 +19,7 @@ export default function SignupForm() {
   }
   async function handleFormSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     const postData = new FormData();
     for (let key in formData) {
       postData.append(key, formData[key]);
@@ -28,6 +30,7 @@ export default function SignupForm() {
         $(".alert-success").fadeIn();
         setTimeout(() => {
           $(".alert-success").fadeOut();
+          onRegisterSuccess();
         }, 3000);
       }
     } catch (err) {
@@ -35,6 +38,7 @@ export default function SignupForm() {
         console.log(err.response.data.message);
       } else console.log("Something was wrong🥲🥲" + err.message);
     }
+    setLoading(false);
   }
 
   return (
@@ -78,7 +82,7 @@ export default function SignupForm() {
       <div className="form-outline mb-4">
         <input
           type="email"
-          id="form3Example3"
+          id="email"
           className="form-control"
           name="email"
           onChange={onInputChange}
@@ -91,7 +95,7 @@ export default function SignupForm() {
       <div className="form-outline mb-4">
         <input
           type="number"
-          id="form3Example3"
+          id="phone"
           className="form-control"
           name="phone"
           onChange={onInputChange}
@@ -164,7 +168,13 @@ export default function SignupForm() {
 
       {/* Submit button */}
       <button type="submit" className="btn btn-primary btn-block mb-4">
-        Sign up
+        {loading ? (
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          <>Sign up</>
+        )}
       </button>
       {/* Register buttons */}
       <div className="text-center">

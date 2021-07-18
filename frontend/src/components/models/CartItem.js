@@ -1,41 +1,60 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 
 const IMG_URL = process.env.REACT_APP_PRODUCT_IMAGES_URL;
 export default function CartItem({ item }) {
-  const { updateQuantity, removeItem } = useContext(CartContext);
+  const product = item.product;
+  const { updateQuantity, removeItem, makeDecision } = useContext(CartContext);
   const { user, addToFavoriteList, removeFromFavoriteList } =
     useContext(UserContext);
-
-  const product = item.product;
-  const [quantity, setQuantity] = useState(item.quantity);
-
   const [like, setLike] = useState(() => {
     return user.favorite_list.indexOf(product._id) < 0 ? false : true;
   });
+  const [quantity, setQuantity] = useState(item.quantity);
+  const [checked, setChecked] = useState(true);
+
+  useEffect(() => {
+    updateQuantity(product._id, quantity);
+  }, [quantity]);
+
+  useEffect(() => {
+    makeDecision(product._id, checked);
+  }, [checked]);
 
   function onChangeQuantity(e) {
     setQuantity(e.target.value);
   }
-  function handleUpdateQuantity() {
-    updateQuantity(product._id, quantity);
-  }
+
   function handleRemoveItem() {
     removeItem(product._id);
   }
-  async function handleLikeClick() {
+  function handleLikeClick() {
     if (like) {
       setLike(false);
-      await removeFromFavoriteList(product._id);
+      removeFromFavoriteList(product._id);
     } else {
       setLike(true);
-      await addToFavoriteList(product._id);
+      addToFavoriteList(product._id);
     }
+  }
+
+  function onCheckChange() {
+    setChecked(checked ? false : true);
   }
 
   return (
     <div className="row mb-4">
+      {/* Check box make sure customer decision ✅ */}
+      <div className="col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center align-items-center ">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={onCheckChange}
+          className="cart-checkbox"
+        />
+      </div>
+      {/* Image of product 🖼️*/}
       <div className="col-md-5 col-lg-3 col-xl-3">
         <div className="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
           <img
@@ -45,25 +64,34 @@ export default function CartItem({ item }) {
           />
         </div>
       </div>
-      <div className="col-md-7 col-lg-9 col-xl-9">
+      <div className="col-md-7 col-lg-8 col-xl-8">
         <div>
           <div className="d-flex justify-content-between">
             <div>
               <h5>{product.name}</h5>
               <p className="mb-3 text-muted text-uppercase small">
-                {product.category}
+                {product.category.name}
               </p>
               <p className="mb-2 text-muted text-uppercase small">
                 Color: blue
               </p>
               <p className="mb-3 text-muted text-uppercase small">Size: M</p>
             </div>
-            <div>
-              <div className="def-number-input number-input safari_only mb-0 w-100 ">
-                <div className="md-form input-group mb-3">
+            <div className="text-end">
+              <div className="def-number-input number-input safari_only mb-0 w-100 d-flex justify-content-end">
+                <div className="md-form input-group mb-3 w-50">
+                  <button
+                    className="btn btn-md btn-dark m-0 px-3"
+                    type="button"
+                    onClick={() => {
+                      setQuantity(quantity + 1);
+                    }}
+                  >
+                    ➕
+                  </button>
                   <input
                     type="number"
-                    className="form-control quantity"
+                    className="form-control quantity p-2"
                     min={1}
                     name="quantity"
                     value={quantity}
@@ -74,9 +102,11 @@ export default function CartItem({ item }) {
                     <button
                       className="btn btn-md btn-dark m-0 px-3"
                       type="button"
-                      onClick={handleUpdateQuantity}
+                      onClick={() => {
+                        if (quantity > 1) setQuantity(quantity - 1);
+                      }}
                     >
-                      Save
+                      ➖
                     </button>
                   </div>
                 </div>
@@ -87,6 +117,11 @@ export default function CartItem({ item }) {
               >
                 (Note, 1 piece)
               </small>
+              <div>
+                <strong>${product.price}</strong>
+                <br />
+                <span>x{quantity}</span>
+              </div>
             </div>
           </div>
           <div className="d-flex justify-content-between align-items-center">
@@ -104,7 +139,7 @@ export default function CartItem({ item }) {
                   style={{ marginLeft: "2px" }}
                   onClick={handleLikeClick}
                 >
-                  UNLIKE ☹️
+                  UNLIKE
                 </button>
               ) : (
                 <button

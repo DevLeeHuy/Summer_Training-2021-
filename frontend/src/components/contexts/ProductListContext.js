@@ -4,14 +4,15 @@ import productApi from "../../api/productApi";
 export const ProductListContext = createContext();
 
 const PAGE_SIZE = 6;
+const DEFAULT_FILTERS = {
+  page: 1,
+  limit: PAGE_SIZE,
+};
 
 export default function ProductListContextProvider(props) {
   const [productList, setProductList] = useState([]);
   const [numOfPages, setNumOfPages] = useState(0);
-  const [filters, setFilters] = useState({
-    page: 1,
-    limit: PAGE_SIZE,
-  });
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   //Load all product to calculate number of pages
   useEffect(() => {
@@ -38,13 +39,21 @@ export default function ProductListContextProvider(props) {
         console.log(err);
       }
     })(); //Filter change (search products, )
-  }, [filters]); //filter products
+    return () => {
+      setProductList([]);
+    };
+  }, [JSON.stringify(filters)]); //filter products
+
+  const setDefaultFilters = () => {
+    setFilters(DEFAULT_FILTERS);
+  };
 
   const ProductListData = {
     productList,
     numOfPages,
     filters,
     setFilters,
+    setDefaultFilters,
   };
   return (
     <ProductListContext.Provider value={ProductListData}>

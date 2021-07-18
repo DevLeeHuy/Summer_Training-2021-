@@ -1,11 +1,34 @@
 const Product = require("../models/Product.model");
+const Category = require("../models/Category.model");
 
 var PAGE_SIZE = 2;
 var skipItem = 0;
-function handleCondition(condition) {
+async function handleCondition(condition) {
+  //Search by Name
   if (condition.name) {
-    condition.name = new RegExp(condition.name); //filter to make relative search product
+    condition.name = new RegExp(condition.name, "i"); //filter to make relative search product
   }
+
+  //Filter by price
+  if (condition.priceRange) {
+    condition.price = { $lte: condition.priceRange };
+    delete condition.priceRange;
+  }
+
+  // Filter by Category & sub-category
+  if (condition.subCategory) {
+    const category = await Category.findOne({
+      "subCategory._id": condition.subCategory,
+    });
+    condition.category = category.subCategory.id(condition.subCategory);
+    delete condition.subCategory;
+  } else if (condition.category) {
+    const category = await Category.findById(condition.category);
+    const subCategoryList = category.subCategory;
+    condition.category = { $in: subCategoryList };
+  }
+
+  //Pagination
   if (condition.page > 0) {
     if (condition.limit > 0) {
       PAGE_SIZE = +condition.limit;
@@ -22,13 +45,15 @@ module.exports = {
     try {
       const condition = req.query;
       var listProduct = [];
-      if (Object.keys(condition).length > 0)
-        listProduct = await Product.find(handleCondition(condition))
+      if (Object.keys(condition).length > 0) {
+        const filters = await handleCondition(condition);
+        listProduct = await Product.find(filters)
           .skip(skipItem)
           .limit(PAGE_SIZE);
-      else listProduct = await Product.find();
+      } else listProduct = await Product.find();
       res.status(200).json(listProduct);
     } catch (err) {
+      console.log(err);
       res.status(404).json({ message: err.message });
     }
   },

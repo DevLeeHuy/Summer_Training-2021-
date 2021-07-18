@@ -45,7 +45,10 @@ module.exports = {
 
   //Sign in - sign up ✅⛔
   register: async function (req, res) {
-    const user = { ...req.body, picture: req.file.filename };
+    const user = {
+      ...req.body,
+      picture: req.file?.filename || "default-user.png",
+    };
     if (!user.username || !user.password) {
       return res
         .status(400)
@@ -82,45 +85,6 @@ module.exports = {
     res.status(200).json("listProduct");
   },
 
-  //Add to cart 🛒
-  shoppingCart: async function (req, res) {
-    try {
-      const user = await User.findById(req.query.userId).populate({
-        path: "cart",
-        populate: "product",
-      });
-      const product = req.query.productId;
-      const quantity = +req.query.quantity || 1;
-      const action = req.query.action;
-      const existedProduct = user.cart.find(
-        (element) => element.product._id.toString() === product
-      );
-
-      if (action !== "get") {
-        if (action === "update") {
-          if (existedProduct) existedProduct.quantity = quantity;
-        } else if (action === "remove") {
-          if (existedProduct)
-            user.cart.splice(user.cart.indexOf(existedProduct), 1);
-        } else {
-          if (existedProduct) {
-            existedProduct.quantity += quantity;
-          } else {
-            const newItem = {
-              product: await Product.findById(product),
-              quantity,
-            };
-            user.cart.push(newItem);
-          }
-        }
-        await user.save();
-      }
-      res.status(200).json({ success: true, cart: user.cart });
-    } catch (err) {
-      res.status(400).json({ message: err.message });
-    }
-  },
-
   //Check out🤑
   checkout: async function (req, res) {
     const listItem = JSON.parse(req.body.listProduct);
@@ -140,7 +104,7 @@ module.exports = {
         bill.total += billDetail.price;
       }
       await bill.save();
-      res.status(201).json(bill);
+      res.status(201).json({ success: true, bill });
     } catch (err) {
       res.status(404).json({ message: err.message });
     }

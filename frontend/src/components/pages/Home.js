@@ -3,16 +3,17 @@ import { ProductListContext } from "../contexts/ProductListContext";
 import SearchForm from "../forms/SearchForm";
 import ProductList from "../models/ProductList";
 import Pagination from "../partials/Pagination";
+import ProductSidebar from "../partials/ProductSidebar";
 
 export default function Home(props) {
-  const { filters, setFilters, productList, numOfPages } =
+  const { filters, setFilters, setDefaultFilters, productList, numOfPages } =
     useContext(ProductListContext);
+
   function handleSearchClick(text) {
     if (text) setFilters({ ...filters, name: text });
   }
   function handleClearClick() {
-    delete filters.name;
-    setFilters({ ...filters });
+    setDefaultFilters();
   }
 
   function handleChangePage(curPage) {
@@ -20,10 +21,9 @@ export default function Home(props) {
   }
 
   return (
-    <div className="content row gx-0 mt-3">
-      <div className="col-2"></div>
-      <div className="col-10">
-        <div className="row gx-0 ">
+    <>
+      <div className="content row gx-0 mt-3">
+        <div className="row">
           <div className="col-6"></div>
           <div className="col">
             <SearchForm
@@ -32,13 +32,29 @@ export default function Home(props) {
             />
           </div>
         </div>
-        <div className="product-container ">
-          <ProductList productList={productList} />
-        </div>
-        <div className="pagination d-flex justify-content-end p-4 ">
-          <Pagination onPageChange={handleChangePage} numOfPages={numOfPages} />
+        <div className="row mt-4">
+          <div className="col-2">
+            <ProductSidebar />
+          </div>
+          <div className="col-10">
+            {Object.getOwnPropertyNames(filters).length > 2 && (
+              <div className="mb-2">
+                <button className="btn btn-default" onClick={handleClearClick}>
+                  <i className="fas fa-chevron-left me-2"></i>
+                  SHOW ALL
+                </button>
+              </div>
+            )}
+            <ProductList productList={productList} />
+            <div className="pagination d-flex justify-content-end p-4 ">
+              <Pagination
+                onPageChange={handleChangePage}
+                numOfPages={numOfPages}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

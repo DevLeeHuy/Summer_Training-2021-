@@ -13,4 +13,7 @@ export default Object.assign({
   favorite_list: function (params) {
     return axiosClient.get("/favorite_list", { params });
   },
+  checkout: function (body) {
+    return axiosClient.post("/checkout", body);
+  },
 });

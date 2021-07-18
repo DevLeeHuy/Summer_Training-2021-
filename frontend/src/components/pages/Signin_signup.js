@@ -17,7 +17,7 @@ export default function Signin_signup() {
   }
   const DisplayPage = () => {
     if (page === 0) return <LoginForm onRegisterClick={onRegisterClick} />;
-    return <SignupForm />;
+    return <SignupForm onRegisterSuccess={() => setPage(0)} />;
   };
   const onLoginClick = () => {
     page === 1 && setPage(0);
