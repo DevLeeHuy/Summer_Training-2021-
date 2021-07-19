@@ -70,3 +70,15 @@ body {
     color: #b3b3b3;
   }
 }
+
+.input-group-text {
+  background-color: rgb(78, 78, 78);
+  color: white;
+}
+
+.edit-profile-container,
+.profile-list-group {
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 3px 5px rgb(212, 212, 212);
+}

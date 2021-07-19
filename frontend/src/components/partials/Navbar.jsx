@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
+import logo from "../../images/logo.png";
 
 export default function Navbar() {
   const { user, unSetCurUser } = useContext(UserContext);
@@ -11,7 +12,7 @@ export default function Navbar() {
     unSetCurUser();
   }
   return (
-    <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light p-0">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -25,13 +26,8 @@ export default function Navbar() {
           <i className="fas fa-bars" />
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <NavLink className="navbar-brand mt-2 mt-lg-0" to="/">
-            <img
-              src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png"
-              height={15}
-              alt=""
-              loading="lazy"
-            />
+          <NavLink className="navbar-brand mt-2 mt-lg-0 p-1" to="/">
+            <img src={logo} height={50} alt="" />
           </NavLink>
           {/* <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
@@ -53,45 +49,15 @@ export default function Navbar() {
         </div>
         {user._id ? (
           <div className="d-flex align-items-center">
+            {/* SHOPPING CART 🛒 */}
             <Link className="text-reset me-3" to="/shopping-cart">
               <i className="fas fa-shopping-cart" />
               <span className="badge rounded-pill badge-notification bg-danger">
                 {shoppingCart.length}
               </span>
             </Link>
-            <a
-              className="text-reset me-3 dropdown-toggle hidden-arrow"
-              href="/"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i className="fas fa-bell" />
-              <span className="badge rounded-pill badge-notification bg-danger">
-                1
-              </span>
-            </a>
-            <ul
-              className="dropdown-menu dropdown-menu-end"
-              aria-labelledby="navbarDropdownMenuLink"
-            >
-              <li>
-                <a className="dropdown-item" href="/">
-                  Some news
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="/">
-                  Another news
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="/">
-                  Something else here
-                </a>
-              </li>
-            </ul>
+
+            {/* USER PROFILE 🧔 */}
             <a
               className="dropdown-toggle d-flex align-items-center hidden-arrow"
               href="/"
@@ -113,15 +79,15 @@ export default function Navbar() {
               aria-labelledby="navbarDropdownMenuLink"
             >
               <li>
-                <a className="dropdown-item" href="/">
+                <Link className="dropdown-item" to="/profile">
                   My profile
-                </a>
+                </Link>
               </li>
-              <li>
+              {/* <li>
                 <a className="dropdown-item" href="/">
                   Settings
                 </a>
-              </li>
+              </li> */}
 
               <li>
                 <button className="dropdown-item" onClick={handleLogoutClick}>
@@ -131,6 +97,7 @@ export default function Navbar() {
             </ul>
           </div>
         ) : (
+          // LOGIN & REGISTER side🔐
           <div className="d-flex align-items-center">
             <NavLink className="btn btn-link px-3 me-2" to="/account?page=0">
               Login

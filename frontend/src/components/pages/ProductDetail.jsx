@@ -112,7 +112,7 @@ export default function ProductDetail(props) {
           <div className="col-md">
             <h5>{product.name}</h5>
             <p className="mb-2 text-muted text-uppercase small">
-              {product.category}
+              {product.category.name}
             </p>
             <div className="rating">
               {[...Array(5)].map((e, index) =>
