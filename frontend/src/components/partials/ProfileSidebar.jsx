@@ -1,6 +1,7 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-export default function ProfileSidebar({ user }) {
+export default function ProfileSidebar({ user, url }) {
   const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
 
   return (
@@ -20,21 +21,34 @@ export default function ProfileSidebar({ user }) {
       <hr />
       <div>
         <div className="profile-list-group">
-          <a href="#profile" className="list-group-item">
+          <NavLink
+            exact
+            to={url}
+            activeClassName="active"
+            className="list-group-item"
+          >
             <span>
-              <i class="far fa-user"></i> Edit profile
+              <i className="far fa-user"></i> Edit profile
             </span>
-          </a>
-          <a href="#order" className="list-group-item">
+          </NavLink>
+          <NavLink
+            to={`${url}/order-information`}
+            activeClassName="active"
+            className="list-group-item"
+          >
             <span>
-              <i class="fas fa-shopping-basket"></i> Order information
+              <i className="fas fa-shopping-basket"></i> Order information
             </span>
-          </a>
-          <a href="#voucher" className="list-group-item">
+          </NavLink>
+          <NavLink
+            to={`${url}/voucher`}
+            activeClassName="active"
+            className="list-group-item"
+          >
             <span>
-              <i class="fas fa-tags"></i> Voucher
+              <i className="fas fa-tags"></i> Voucher
             </span>
-          </a>
+          </NavLink>
         </div>
       </div>
     </div>

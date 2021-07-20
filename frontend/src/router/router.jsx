@@ -18,7 +18,7 @@ export default function MainRouter() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/account" component={Login} />
-        <Route exact path="/profile" component={Profile} />
+        <Route path="/profile" component={Profile} />
         <Route exact path="/product-detail-:id" component={ProductDetail} />
         <Route exact path="/shopping-cart" component={ShoppingCart} />
         <Route exact path="/admin" component={AdminPage} />
