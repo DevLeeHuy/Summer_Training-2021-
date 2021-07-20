@@ -154,7 +154,9 @@ export default function CartItem({ item }) {
             </div>
             <p className="mb-0">
               <span>
-                <strong>${(product.price * quantity).toFixed(2)}</strong>
+                <strong className="price-tag">
+                  ${(product.price * quantity).toFixed(2)}
+                </strong>
               </span>
             </p>
           </div>

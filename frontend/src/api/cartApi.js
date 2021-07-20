@@ -11,7 +11,7 @@ export default Object.assign({
   update: function (body) {
     return axiosClient.put(url + `/${body.productId}`, body);
   },
-  delete: function (body) {
-    return axiosClient.delete(url + `/${body.productId}`, body);
+  delete: function (data) {
+    return axiosClient.delete(url + `/${data.productId}`, { data });
   },
 });

@@ -27,7 +27,7 @@ export default function CartContextProvider(props) {
     return () => {
       setShoppingCart([]);
     };
-  }, [user._id]);
+  }, [user._id, user.cart]);
 
   //Update total cost when changing quantity
   useEffect(() => {

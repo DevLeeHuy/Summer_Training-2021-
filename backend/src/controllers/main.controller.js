@@ -74,6 +74,7 @@ module.exports = {
         customer: user,
       });
       for (let item of listItem) {
+        // Save to bill
         let tempProduct = await Product.findById(item.product);
         item.product = tempProduct;
         let billDetail = new BillDetail(item);
@@ -82,9 +83,14 @@ module.exports = {
         await billDetail.save();
         bill.list_product.push(billDetail);
         bill.total += billDetail.price;
+        //Remove from cart
+        user.cart = user.cart.filter(
+          (ele) => ele.product.toString() !== item.product._id.toString()
+        );
       }
       await bill.save();
-      res.status(201).json({ success: true, bill });
+      await user.save();
+      res.status(201).json({ success: true, bill, cart: user.cart });
     } catch (err) {
       res.status(404).json({ message: err.message });
     }

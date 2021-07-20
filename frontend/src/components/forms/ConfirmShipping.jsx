@@ -1,6 +1,12 @@
 import React from "react";
 
-export default function Confirm({ id, confirm, pending }) {
+export default function ConfirmShipping({
+  id,
+  confirm,
+  pending,
+  user,
+  onAddressChange,
+}) {
   return (
     <div
       className="modal right fade"
@@ -19,12 +25,26 @@ export default function Confirm({ id, confirm, pending }) {
             </h5>
             <button
               type="button"
-              className="btn-close"
+              className="btn-close close-confirm-shipping"
               data-mdb-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
           <div className="modal-body">
+            {/* <div className="input-group  mb-4">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="basic-addon5">
+                  Address:
+                </span>
+              </div>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={user.addresses[0]}
+                placeholder="Input shipping address"
+                aria-describedby="basic-addon5"
+              />
+            </div> */}
             <p className="note note-light">
               <strong>Note:</strong> Please double check the products you have
               selected and make sure you intend to buy them✅

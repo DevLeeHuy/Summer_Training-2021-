@@ -17,11 +17,13 @@ export default function MainRouter() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
+
+        <Route exact path="/admin" component={AdminPage} />
+
         <Route exact path="/account" component={Login} />
         <Route path="/profile" component={Profile} />
         <Route exact path="/product-detail-:id" component={ProductDetail} />
         <Route exact path="/shopping-cart" component={ShoppingCart} />
-        <Route exact path="/admin" component={AdminPage} />
         <Route exact path="/bill-detail" component={BillDetail} />
       </Switch>
       {location.pathname !== "/admin" && <Footer />}

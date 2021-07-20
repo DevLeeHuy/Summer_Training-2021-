@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import CartList from "../models/CartList";
 import { CartContext } from "../contexts/CartContext";
-import Confirm from "../forms/Confirm";
 import { UserContext } from "../contexts/UserContext";
+import ConfirmShipping from "../forms/ConfirmShipping";
 import userApi from "../../api/userApi";
 import { useHistory } from "react-router-dom";
 
@@ -10,9 +10,11 @@ import $ from "jquery";
 
 export default function ShoppingCart() {
   const { shoppingCart, totalCost } = useContext(CartContext);
-  const { user } = useContext(UserContext);
+  const { user, setCurUser } = useContext(UserContext);
   const [pending, setPending] = useState(false);
   const history = useHistory();
+
+  // function onAddressChange(){}
 
   function handleCheckout() {
     setPending(true);
@@ -24,7 +26,8 @@ export default function ShoppingCart() {
     userApi
       .checkout({ listProduct, userId })
       .then((response) => {
-        $(".modal-backdrop").hide();
+        $(".close-confirm-shipping").trigger("click");
+        setCurUser({ ...user, cart: response.cart });
         setPending(false);
         history.push("/bill-detail", { bill: response.bill });
       })
@@ -90,37 +93,26 @@ export default function ShoppingCart() {
           {/* Card */}
           <div className="card mb-3">
             <div className="card-body">
-              <h5 className="mb-3">The total amount of</h5>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                  Temporary amount
-                  <span>$25.98</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                  Shipping
-                  <span>Gratis</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                  <div>
-                    <strong>The total amount of</strong>
-                    <strong>
-                      <p className="mb-0">(including VAT)</p>
-                    </strong>
-                  </div>
-                  <span>
-                    <strong>${totalCost.toFixed(2)}</strong>
-                  </span>
-                </li>
-              </ul>
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>The total amount of</strong>
+                  <strong>
+                    <p className="mb-0">(including VAT)</p>
+                  </strong>
+                </div>
+                <span>
+                  <strong className="price-tag">${totalCost.toFixed(2)}</strong>
+                </span>
+              </div>
               <button
                 type="button"
-                className="btn btn-primary btn-block waves-effect waves-light"
+                className="btn btn-primary btn-block waves-effect waves-light mt-3"
                 data-mdb-toggle="modal"
                 data-mdb-target="#checkoutConfirm"
               >
                 checkout
               </button>
-              <Confirm
+              <ConfirmShipping
                 id="checkoutConfirm"
                 confirm={handleCheckout}
                 pending={pending}
