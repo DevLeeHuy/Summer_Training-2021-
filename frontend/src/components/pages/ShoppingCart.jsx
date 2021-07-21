@@ -29,7 +29,7 @@ export default function ShoppingCart() {
         $(".close-confirm-shipping").trigger("click");
         setCurUser({ ...user, cart: response.cart });
         setPending(false);
-        history.push("/bill-detail", { bill: response.bill });
+        history.push("/thankyou", { bill: response.bill });
       })
       .catch((error) => {
         console.log(error.message);

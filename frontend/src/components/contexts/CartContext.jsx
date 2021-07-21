@@ -38,7 +38,7 @@ export default function CartContextProvider(props) {
           return acc;
         }, 0)
       );
-    }
+    } else setTotalCost(0);
   }, [shoppingCart]);
 
   const addToCart = async (productId, quantity = 1) => {

@@ -7,7 +7,7 @@ import ProductDetail from "../components/pages/ProductDetail";
 import Login from "../components/pages/Signin_signup";
 import ShoppingCart from "../components/pages/ShoppingCart";
 import AdminPage from "../components/pages/AdminPage";
-import BillDetail from "../components/pages/BillDetail";
+import ThankyouPage from "../components/pages/ThankyouPage";
 import Profile from "../components/pages/Profile";
 
 export default function MainRouter() {
@@ -24,7 +24,7 @@ export default function MainRouter() {
         <Route path="/profile" component={Profile} />
         <Route exact path="/product-detail-:id" component={ProductDetail} />
         <Route exact path="/shopping-cart" component={ShoppingCart} />
-        <Route exact path="/bill-detail" component={BillDetail} />
+        <Route exact path="/thankyou" component={ThankyouPage} />
       </Switch>
       {location.pathname !== "/admin" && <Footer />}
     </>

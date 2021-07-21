@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-const url = "user";
+const url = "/user";
 export default Object.assign({
   login: function (body) {
     return axiosClient.post("/login", body);
