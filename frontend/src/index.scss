@@ -7,6 +7,49 @@ body {
   }
 }
 
+// Banner
+.banner-side {
+  .sale-banner {
+    height: 200px;
+    background-image: url("https://content.asos-media.com/-/media/homepages/unisex/homepages/2021/06-june/ss-sale/desktop/mw_pink_desktop-1440x664.jpg");
+    .sale-banner-header {
+      span {
+        color: white;
+        background-color: #ff4186;
+      }
+      span:nth-child(3) {
+        font-size: 24px;
+      }
+    }
+  }
+  .main-banner {
+    height: 600px;
+    background-image: url("https://content.asos-media.com/-/media/homepages/mw/2021/07/19th/mw_dreamland_desktophero_1258x600-(1).jpg");
+    div {
+      h1 {
+        color: black;
+        background-color: white;
+        font-weight: bold;
+      }
+      button {
+        border: 0;
+        background: none;
+        box-shadow: none;
+        border-radius: 0px;
+        background-color: white;
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        transition: background-color 1s ease, color 1s ease;
+        &:hover {
+          background-color: black;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
 /* Sidebar */
 .sidebar {
   position: fixed;
@@ -50,17 +93,26 @@ body {
       currentColor;
   }
 }
+
+// Product Side
+.product-side {
+  .product-side-title {
+    color: black;
+    h1 {
+      font-weight: bold;
+    }
+  }
+}
 .product-item {
   height: fit-content;
   border-radius: 10px;
   overflow: hidden;
-  width: 20%;
   &:hover {
     box-shadow: 0 5px 15px rgb(214, 214, 214);
   }
-}
-.product-item img {
-  height: 300px;
+  img {
+    height: 300px;
+  }
 }
 
 .category-item,
@@ -86,4 +138,14 @@ body {
 
 .price-tag {
   color: rgb(37, 201, 37);
+}
+
+// RESPONSIVE
+@media (max-width: 1200px) {
+  .product-sidebar-container {
+    display: none;
+  }
+  .category-btn {
+    display: block !important;
+  }
 }

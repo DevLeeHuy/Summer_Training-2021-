@@ -12,7 +12,7 @@ export default function Navbar() {
     unSetCurUser();
   }
   return (
-    <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light p-0">
+    <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark p-0">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -50,7 +50,7 @@ export default function Navbar() {
         {user._id ? (
           <div className="d-flex align-items-center">
             {/* SHOPPING CART 🛒 */}
-            <Link className="text-reset me-3" to="/shopping-cart">
+            <Link className="text-light me-3" to="/shopping-cart">
               <i className="fas fa-shopping-cart" />
               <span className="badge rounded-pill badge-notification bg-danger">
                 {shoppingCart.length}
@@ -75,11 +75,11 @@ export default function Navbar() {
               />
             </a>
             <ul
-              className="dropdown-menu dropdown-menu-end"
+              className="dropdown-menu dropdown-menu-end bg-dark "
               aria-labelledby="navbarDropdownMenuLink"
             >
               <li>
-                <Link className="dropdown-item" to="/profile">
+                <Link className="dropdown-item text-info" to="/profile">
                   My profile
                 </Link>
               </li>
@@ -90,7 +90,10 @@ export default function Navbar() {
               </li> */}
 
               <li>
-                <button className="dropdown-item" onClick={handleLogoutClick}>
+                <button
+                  className="dropdown-item text-info"
+                  onClick={handleLogoutClick}
+                >
                   Logout
                 </button>
               </li>

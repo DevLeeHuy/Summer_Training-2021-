@@ -36,7 +36,7 @@ export default function ProductItem(props) {
     else history.push("/account");
   }
   return (
-    <div className="product-item card ms-4 me-4 mb-3 p-0 col-3 pb-3 position-relative">
+    <div className="product-item  card ms-1 me-2 mb-3 p-0  pb-3 position-relative">
       <Success isSuccess={isSuccess} />
 
       <img className="img-fluid w-100" src={product.image} alt="Sample" />
@@ -48,9 +48,9 @@ export default function ProductItem(props) {
         <div className="rating">
           {[...Array(5)].map((e, index) =>
             index < product.rating.star ? (
-              <i className="fas fa-star fa-sm text-primary" key={index} />
+              <i className="fas fa-star fa-sm text-warning" key={index} />
             ) : (
-              <i className="far fa-star fa-sm text-primary" key={index} />
+              <i className="far fa-star fa-sm text-warning" key={index} />
             )
           )}
         </div>
@@ -60,7 +60,7 @@ export default function ProductItem(props) {
         <div>
           <button
             type="button"
-            className="btn btn-primary btn-sm mr-1 mb-2"
+            className="btn btn-dark btn-sm mr-1 mb-2"
             onClick={handleAddToCart}
           >
             <i className="fas fa-shopping-cart pr-2" />

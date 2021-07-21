@@ -27,9 +27,9 @@ export default function PriceRange() {
           onChange={rangeOnChange}
         />
       </div>
-      <span>
+      <p>
         Under <b style={{ color: "#16bf2d" }}>${priceRange}</b> 💰
-      </span>
+      </p>
       <button
         className="btn btn-dark p-0 float-right"
         style={{ width: "50px", height: "25px" }}

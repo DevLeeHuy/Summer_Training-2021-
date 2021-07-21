@@ -5,7 +5,7 @@ import CategoryList from "../models/CategoryList";
 export default function ProductSidebar() {
   return (
     <div
-      className="sidebar-container pe-3"
+      className="product-sidebar-content "
       style={{ borderRight: "1px solid #e0e0e0" }}
     >
       <div className="card">

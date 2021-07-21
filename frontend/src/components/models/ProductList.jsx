@@ -7,7 +7,9 @@ export default function ProductList(props) {
     <div className="product-container">
       <div className="row gx-0 d-flex justify-content-center">
         {productList.map((value, key) => (
-          <ProductItem item={value} key={value._id} />
+          <div className="col-lg-4 col-md-6 col-sm-12" key={value._id}>
+            <ProductItem item={value} />
+          </div>
         ))}
       </div>
     </div>
