@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import userApi from "../../api/userApi";
+import orderApi from "../../api/oderApi";
 
 export const UserContext = createContext();
 
@@ -7,6 +8,33 @@ export default function UserContextProvider(props) {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || {}
   );
+  const [orders, setOrders] = useState([]);
+  const [favoriteList, setFavoriteList] = useState([]);
+
+  //Get customer orders
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await orderApi.getOrders({ userId: user._id });
+        setOrders(response.orders);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [user._id]);
+
+  //Get customer favorite list
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await userApi.favorite_list({ userId: user._id });
+        setFavoriteList(response.favorite_list);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [JSON.stringify(user.favorite_list)]);
+
   function setCurUser(curUser) {
     localStorage.setItem("user", JSON.stringify(curUser));
     setUser(curUser);
@@ -19,25 +47,37 @@ export default function UserContextProvider(props) {
     const tempUser = { ...user };
     !tempUser.favorite_list.find((e) => e === productId) &&
       tempUser.favorite_list.push(productId); //Push new item if it isn't already existed
-    setCurUser(tempUser);
-    userApi.favorite_list({
-      action: "add",
-      productId,
-      userId: user._id,
-    });
+    userApi
+      .favorite_list(
+        {
+          productId,
+          userId: user._id,
+        },
+        "add"
+      )
+      .then(() => {
+        setCurUser(tempUser);
+      });
   }
   function removeFromFavoriteList(productId) {
     const tempUser = { ...user };
     tempUser.favorite_list.splice(tempUser.favorite_list.indexOf(productId), 1);
-    setCurUser(tempUser);
-    userApi.favorite_list({
-      action: "remove",
-      productId,
-      userId: user._id,
-    });
+    userApi
+      .favorite_list(
+        {
+          productId,
+          userId: user._id,
+        },
+        "remove"
+      )
+      .then(() => {
+        setCurUser(tempUser);
+      });
   }
   const userContextData = {
     user,
+    orders,
+    favoriteList,
     setCurUser,
     unSetCurUser,
     addToFavoriteList,

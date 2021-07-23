@@ -1,6 +1,10 @@
 body {
   background-color: #fbfbfb;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
 @media (min-width: 991.98px) {
   main {
     padding-left: 240px;
@@ -140,12 +144,42 @@ body {
   color: rgb(37, 201, 37);
 }
 
+.edit-profile-container {
+  h1 {
+    color: black;
+  }
+  .change-password-container {
+    padding: 20px;
+    .form-outline {
+      margin: 10px;
+      .myInput {
+        width: 350px;
+      }
+    }
+  }
+}
+
+//Customize
+.my-active {
+  font-weight: bold;
+  &:after {
+    content: " 👈";
+  }
+}
+
 // RESPONSIVE
 @media (max-width: 1200px) {
   .product-sidebar-container {
     display: none;
   }
   .category-btn {
+    display: block !important;
+  }
+
+  .profile-sidebar-container {
+    display: none;
+  }
+  .profile-sidebar-btn {
     display: block !important;
   }
 }

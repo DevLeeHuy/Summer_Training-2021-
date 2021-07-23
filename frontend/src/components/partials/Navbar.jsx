@@ -75,26 +75,26 @@ export default function Navbar() {
               />
             </a>
             <ul
-              className="dropdown-menu dropdown-menu-end bg-dark "
+              className="dropdown-menu dropdown-menu-end dropdown-menu-dark "
               aria-labelledby="navbarDropdownMenuLink"
             >
               <li>
-                <Link className="dropdown-item text-info" to="/profile">
-                  My profile
+                <Link className="dropdown-item " to="/profile">
+                  🗃️ My profile
                 </Link>
               </li>
-              {/* <li>
-                <a className="dropdown-item" href="/">
-                  Settings
-                </a>
-              </li> */}
+              <li>
+                <Link className="dropdown-item" to="/favorite-list">
+                  💗 Favorite products
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
 
               <li>
-                <button
-                  className="dropdown-item text-info"
-                  onClick={handleLogoutClick}
-                >
-                  Logout
+                <button className="dropdown-item " onClick={handleLogoutClick}>
+                  👋 Logout
                 </button>
               </li>
             </ul>

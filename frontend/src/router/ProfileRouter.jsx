@@ -8,11 +8,7 @@ export default function ProfileRouter({ path }) {
   return (
     <Switch>
       <Route exact path={path} component={EditProfile} />
-      <Route
-        exact
-        path={`${path}/order-information`}
-        component={OrderInformation}
-      />
+      <Route path={`${path}/order-information`} component={OrderInformation} />
       {/* <Route exact path={`${path}/voucher`} component={Voucher} /> */}
     </Switch>
   );

@@ -20,8 +20,6 @@ export default function Home(props) {
     setFilters({ ...filters, page: curPage });
   }
 
-  function showSideBar() {}
-
   return (
     <>
       <section className="banner-side">
@@ -53,7 +51,6 @@ export default function Home(props) {
             <button
               className="btn btn-light category-btn p-2 d-none"
               style={{ width: "50px", height: "50px" }}
-              onClick={showSideBar}
               data-mdb-toggle="offcanvas"
               data-mdb-target="#ProductSidebarMenu"
               aria-controls="ProductSidebarMenu"
@@ -97,7 +94,7 @@ export default function Home(props) {
       <div
         id="ProductSidebarMenu"
         className="offcanvas offcanvas-start  "
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="ProductSidebarMenuLabel"
       >
         <ProductSidebar />
@@ -106,7 +103,7 @@ export default function Home(props) {
           data-mdb-dismiss="offcanvas"
           aria-label="Close"
         >
-          <i class="fas fa-arrow-left"></i>
+          <i className="fas fa-arrow-left"></i>
         </button>
       </div>
     </>

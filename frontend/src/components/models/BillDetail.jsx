@@ -30,7 +30,7 @@ export default function BillDetail({ bill }) {
           </thead>
           <tbody>
             {list_product?.map((item, index) => (
-              <tr>
+              <tr key={index}>
                 <th scope="row">{index + 1}</th>
                 <td>{item.product.name}</td>
                 <td>{item.quantity}</td>

@@ -7,6 +7,8 @@ router.use("/categories", require("./category.route"));
 router.use("/cart", require("./cart.route"));
 router.use("/order", require("./order.route"));
 
+router.use("/favorite", require("./favorite.route"));
+
 router.use("/accounts", require("./account.route"));
 router.use("/user", require("./user.route"));
 

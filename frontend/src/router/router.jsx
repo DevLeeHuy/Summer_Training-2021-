@@ -9,6 +9,7 @@ import ShoppingCart from "../components/pages/ShoppingCart";
 import AdminPage from "../components/pages/AdminPage";
 import ThankyouPage from "../components/pages/ThankyouPage";
 import Profile from "../components/pages/Profile";
+import FavoriteListPage from "../components/pages/FavoriteListPage";
 
 export default function MainRouter() {
   const location = useLocation();
@@ -22,8 +23,12 @@ export default function MainRouter() {
 
         <Route exact path="/account" component={Login} />
         <Route path="/profile" component={Profile} />
+
         <Route exact path="/product-detail-:id" component={ProductDetail} />
+        <Route exact path="/favorite-list" component={FavoriteListPage} />
+
         <Route exact path="/shopping-cart" component={ShoppingCart} />
+
         <Route exact path="/thankyou" component={ThankyouPage} />
       </Switch>
       {location.pathname !== "/admin" && <Footer />}

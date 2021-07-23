@@ -2,37 +2,7 @@ const Product = require("../models/Product.model");
 const User = require("../models/User.model");
 const Bill = require("../models/Bill.model");
 const BillDetail = require("../models/BillDetail.model");
-const addToFavoriteList = async function (req, res) {
-  const productId = req.query.productId;
-  const userId = req.query.userId;
-  try {
-    const product = await Product.findById(productId);
-    const user = await User.findById(userId);
-    const isExisted = user.favorite_list.indexOf(productId);
-    if (isExisted < 0) {
-      user.favorite_list.push(product);
-      await user.save();
-    }
-    return res.status(200).json({ success: true, user });
-  } catch (err) {
-    return res.status(400).json({ message: err.message });
-  }
-};
-const removeFromFavoriteList = async function (req, res) {
-  const productId = req.query.productId;
-  const userId = req.query.userId;
-  try {
-    const user = await User.findById(userId);
-    const isExisted = user.favorite_list.indexOf(productId);
-    if (isExisted >= 0) {
-      user.favorite_list.splice(isExisted, 1);
-      await user.save();
-    }
-    return res.status(200).json({ success: true, user });
-  } catch (err) {
-    return res.status(400).json({ message: err.message });
-  }
-};
+
 module.exports = {
   index: async function (req, res) {
     try {
@@ -94,15 +64,6 @@ module.exports = {
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
-  },
-
-  //Favorite list💖
-  FavoriteList: function (req, res) {
-    const action = req.query.action;
-    if (action === "remove") {
-      return removeFromFavoriteList(req, res);
-    }
-    return addToFavoriteList(req, res);
   },
 
   //Rating⭐⭐⭐⭐⭐

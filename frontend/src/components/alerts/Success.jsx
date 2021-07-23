@@ -23,6 +23,8 @@ export default function Success({ isSuccess, message }) {
         style={{
           minHeight: "100px",
           minWidth: "100px",
+          maxHeight: "300px",
+          maxWidth: "300px",
           backgroundColor: "white",
           boxShadow: "3px 5px 5px #F2F2F2",
           zIndex: "1",

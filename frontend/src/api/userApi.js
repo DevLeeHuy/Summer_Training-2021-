@@ -13,8 +13,17 @@ export default Object.assign({
   shoppingCart: function (params) {
     return axiosClient.get("/cart", { params });
   },
-  favorite_list: function (params) {
-    return axiosClient.get("/favorite_list", { params });
+  favorite_list: function (body, action = "get") {
+    switch (action) {
+      case "add":
+        return axiosClient.post("/favorite", body);
+      case "remove":
+        return axiosClient.delete(`/favorite/${body.productId}`, {
+          data: body,
+        });
+      default:
+        return axiosClient.get("/favorite", { params: body });
+    }
   },
   checkout: function (body) {
     return axiosClient.post("/checkout", body);

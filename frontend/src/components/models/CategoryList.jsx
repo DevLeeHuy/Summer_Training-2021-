@@ -31,9 +31,11 @@ function Category({ item }) {
         </div>
         <span
           className="position-absolute list-btn ps-2 h-100 "
+          role="button"
           data-mdb-toggle="collapse"
           data-mdb-target={"#" + item.name}
-          aria-expanded="true"
+          aria-expanded="false"
+          aria-controls={item.name}
           style={{ right: "8px", top: "25%", borderLeft: "1px solid #ebebeb" }}
         >
           <i className="fas fa-list-ol"></i>
@@ -46,8 +48,8 @@ function Category({ item }) {
 
 function SubCategoryList({ subList, parent }) {
   return (
-    <div className="collapse hide subCategory-container" id={parent}>
-      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small mt-1 mb-0 ">
+    <div className="collapse subCategory-container" id={parent}>
+      <ul className=" list-unstyled fw-normal pb-1 small mt-1 mb-0 ">
         {subList.map((ele, index) => (
           <li key={index} className="text-center  sidenav-item p-1 ">
             <SubCategory item={ele} />

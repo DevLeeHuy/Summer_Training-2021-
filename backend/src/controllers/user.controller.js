@@ -25,11 +25,26 @@ module.exports = {
   update: async function (req, res) {
     try {
       let user = await User.findById(req.params.id);
+      let userCurPw = req.body.CurrentPassword;
       if (user) {
-        const editedUser = {
-          ...req.body,
-          picture: req.file?.filename || user.picture,
-        };
+        let editedUser = {};
+        //Change password 🗝️
+        if (userCurPw) {
+          if (user.password === userCurPw) {
+            editedUser = {
+              password: req.body.NewPassword,
+            };
+          } else
+            return res
+              .status(403)
+              .json({ message: "Your password is not correct" });
+        }
+        // Edit user 💁‍♂️
+        else
+          editedUser = {
+            ...req.body,
+            picture: req.file?.filename || user.picture,
+          };
         await User.updateOne({ _id: req.params.id }, editedUser);
         user = await User.findById(req.params.id);
         res.status(200).json({ success: true, user });

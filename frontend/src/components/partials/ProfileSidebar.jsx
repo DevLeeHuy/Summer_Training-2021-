@@ -5,7 +5,7 @@ export default function ProfileSidebar({ user, url }) {
   const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
 
   return (
-    <div className="profile-sidebar-container  ">
+    <div className="container ">
       <div className="d-flex justify-content-center w-100 p-3">
         <img
           src={IMG_URL + user.picture}
@@ -24,7 +24,7 @@ export default function ProfileSidebar({ user, url }) {
           <NavLink
             exact
             to={url}
-            activeClassName="active"
+            activeClassName="my-active"
             className="list-group-item"
           >
             <span>
@@ -33,7 +33,7 @@ export default function ProfileSidebar({ user, url }) {
           </NavLink>
           <NavLink
             to={`${url}/order-information`}
-            activeClassName="active"
+            activeClassName="my-active"
             className="list-group-item"
           >
             <span>
@@ -42,7 +42,7 @@ export default function ProfileSidebar({ user, url }) {
           </NavLink>
           <NavLink
             to={`${url}/voucher`}
-            activeClassName="active"
+            activeClassName="my-active"
             className="list-group-item"
           >
             <span>
