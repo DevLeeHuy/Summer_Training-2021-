@@ -3,9 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 import logo from "../../images/logo.png";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { getUserImgUrl } from "../../configs/images";
 
 export default function Navbar() {
-  const { user, unSetCurUser } = useContext(UserContext);
+  const { user, unSetCurUser, loginThirdParty } = useContext(UserContext);
   const { shoppingCart } = useContext(CartContext);
   const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
   function handleLogoutClick() {
@@ -67,7 +69,7 @@ export default function Navbar() {
               aria-expanded="false"
             >
               <img
-                src={IMG_URL + user.picture}
+                src={getUserImgUrl(user.picture)}
                 className="rounded-circle"
                 height={25}
                 alt="avatar"
@@ -102,19 +104,30 @@ export default function Navbar() {
         ) : (
           // LOGIN & REGISTER side🔐
           <div className="d-flex align-items-center">
-            <NavLink className="btn btn-link px-3 me-2" to="/account?page=0">
+            <NavLink
+              className="btn btn-outline-light  px-3 me-2"
+              to="/account?page=0"
+            >
               Login
             </NavLink>
-            <NavLink className="btn btn-primary me-3" to="/account?page=1">
+            <NavLink className="btn btn-light me-3" to="/account?page=1">
               Sign up for free
             </NavLink>
-            <a
-              className="btn btn-dark px-3"
-              href="https://github.com/mdbootstrap/mdb-ui-kit"
-              role="button"
-            >
-              <i className="fab fa-github"></i>
-            </a>
+
+            <FacebookLogin
+              appId="504647520640671"
+              // autoLoad
+              callback={loginThirdParty.facebook}
+              render={(renderProps) => (
+                <button
+                  className="btn text-white px-3"
+                  style={{ backgroundColor: "#324d84" }}
+                  onClick={renderProps.onClick}
+                >
+                  <i className="fab fa-facebook"></i>
+                </button>
+              )}
+            />
           </div>
         )}
       </div>

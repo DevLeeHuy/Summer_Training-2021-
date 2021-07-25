@@ -54,4 +54,8 @@ module.exports = {
     }
   },
   remove: function (req, res) {},
+
+  authThirdParty: async function (req, res) {
+    return res.json({ success: true, user: req.user });
+  },
 };

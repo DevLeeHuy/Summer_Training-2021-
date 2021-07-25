@@ -3,6 +3,7 @@ import { NavLink, useHistory } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 import Success from "../alerts/Success";
+import { getProductImgUrl } from "../../configs/images";
 
 export default function ProductItem(props) {
   const product = props.item;
@@ -39,7 +40,11 @@ export default function ProductItem(props) {
     <div className="product-item  card ms-1 me-2 mb-3 p-0  pb-3 position-relative">
       <Success isSuccess={isSuccess} />
 
-      <img className="img-fluid w-100" src={product.image} alt="Sample" />
+      <img
+        className="img-fluid w-100"
+        src={getProductImgUrl(product.image)}
+        alt="Sample"
+      />
       <div className="text-center pt-4">
         <h5>{product.name}</h5>
         <p className="mb-2 text-muted text-uppercase small">

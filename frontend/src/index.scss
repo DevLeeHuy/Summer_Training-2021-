@@ -162,6 +162,9 @@ body {
 //Customize
 .my-active {
   font-weight: bold;
+  &:before {
+    content: "👉 ";
+  }
   &:after {
     content: " 👈";
   }

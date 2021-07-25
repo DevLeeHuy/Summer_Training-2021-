@@ -3,8 +3,7 @@ import { UserContext } from "../contexts/UserContext";
 import userApi from "../../api/userApi";
 import $ from "jquery";
 import Success from "../alerts/Success";
-
-const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
+import { getUserImgUrl } from "../../configs/images";
 
 export default function EditProfile() {
   const { user, setCurUser } = useContext(UserContext);
@@ -49,7 +48,7 @@ export default function EditProfile() {
 function Profile({ user, handleFormSubmit }) {
   const [formData, setFormData] = useState({});
   const [saveLoading, setSaveLoading] = useState(false);
-  const [previewImg, setPreviewImg] = useState(IMG_URL + user.picture);
+  const [previewImg, setPreviewImg] = useState(getUserImgUrl(user.picture));
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   function onInputChange(e) {
@@ -115,10 +114,10 @@ function ProfileInputField({ user, onInputChange }) {
             <input
               type="text"
               className="form-control"
-              defaultValue={user.firstname}
+              defaultValue={user.first_name}
               placeholder="First name"
               aria-describedby="basic-addon1"
-              name="firstname"
+              name="first_name"
               onChange={onInputChange}
             />
           </div>
@@ -131,10 +130,10 @@ function ProfileInputField({ user, onInputChange }) {
             <input
               type="text"
               className="form-control"
-              defaultValue={user.lastname}
+              defaultValue={user.last_name}
               placeholder="Last name"
               aria-describedby="basic-addon2"
-              name="lastname"
+              name="last_name"
               onChange={onInputChange}
             />
           </div>

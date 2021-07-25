@@ -32,7 +32,7 @@ module.exports = {
     }
   },
   logout: async function (req, res) {
-    res.status(200).json("listProduct");
+    // res.status(200).json("listProduct");
   },
 
   //Check out🤑

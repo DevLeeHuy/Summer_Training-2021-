@@ -1,14 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { getUserImgUrl } from "../../configs/images";
 
 export default function ProfileSidebar({ user, url }) {
-  const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
-
   return (
     <div className="container ">
       <div className="d-flex justify-content-center w-100 p-3">
         <img
-          src={IMG_URL + user.picture}
+          src={getUserImgUrl(user.picture)}
           alt="pic"
           className="rounded-circle"
           height="75"

@@ -4,6 +4,12 @@ export default Object.assign({
   login: function (body) {
     return axiosClient.post("/login", body);
   },
+  loginByFacebook: function (access_token) {
+    return axiosClient.post(url + "/auth/facebook", { access_token });
+  },
+  loginByGoogle: function () {
+    return axiosClient.post(url + "/auth/google");
+  },
   register: function (body) {
     return axiosClient.post(url, body);
   },

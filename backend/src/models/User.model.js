@@ -10,13 +10,21 @@ const cartItem = new schema(
 );
 
 const User = new schema({
-  firstname: { type: String, required: true },
-  lastname: { type: String, required: true },
-  username: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
+  first_name: { type: String, required: true },
+  last_name: { type: String, required: true },
+  username: { type: String },
+  password: { type: String },
   phone: { type: String },
   email: { type: String },
   picture: { type: String },
+  auth: {
+    type: {
+      type: String,
+      enum: ["local", "google-plus", "facebook"],
+      default: "local",
+    },
+    id: { type: String },
+  },
   cart: [{ type: cartItem }],
   favorite_list: [{ type: schema.Types.ObjectId, ref: "Product" }],
 });

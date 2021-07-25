@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
-
-const IMG_URL = process.env.REACT_APP_PRODUCT_IMAGES_URL;
+import { getProductImgUrl } from "../../configs/images";
 export default function CartItem({ item }) {
   const product = item.product;
   const { updateQuantity, removeItem, makeDecision } = useContext(CartContext);
@@ -59,7 +58,7 @@ export default function CartItem({ item }) {
         <div className="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
           <img
             className="img-fluid w-100"
-            src={IMG_URL + product.image}
+            src={getProductImgUrl(product.image)}
             alt="Sample"
           />
         </div>

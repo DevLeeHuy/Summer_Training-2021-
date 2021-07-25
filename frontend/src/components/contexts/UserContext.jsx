@@ -13,26 +13,28 @@ export default function UserContextProvider(props) {
 
   //Get customer orders
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await orderApi.getOrders({ userId: user._id });
-        setOrders(response.orders);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    if (user._id)
+      (async () => {
+        try {
+          const response = await orderApi.getOrders({ userId: user._id });
+          setOrders(response.orders);
+        } catch (err) {
+          console.log(err);
+        }
+      })();
   }, [user._id]);
 
   //Get customer favorite list
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await userApi.favorite_list({ userId: user._id });
-        setFavoriteList(response.favorite_list);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    if (user._id)
+      (async () => {
+        try {
+          const response = await userApi.favorite_list({ userId: user._id });
+          setFavoriteList(response.favorite_list);
+        } catch (err) {
+          console.log(err);
+        }
+      })();
   }, [JSON.stringify(user.favorite_list)]);
 
   function setCurUser(curUser) {
@@ -43,6 +45,7 @@ export default function UserContextProvider(props) {
     localStorage.removeItem("user");
     setUser({});
   }
+
   function addToFavoriteList(productId) {
     const tempUser = { ...user };
     !tempUser.favorite_list.find((e) => e === productId) &&
@@ -74,8 +77,29 @@ export default function UserContextProvider(props) {
         setCurUser(tempUser);
       });
   }
+
+  const loginThirdParty = {
+    facebook: async ({ accessToken }) => {
+      try {
+        const response = await userApi.loginByFacebook(accessToken);
+        if (response.success) setCurUser(response.user);
+      } catch (err) {
+        console.log(err.message);
+      }
+    },
+    google: async () => {
+      try {
+        const response = await userApi.loginByGoogle();
+        if (response.success) setCurUser(response.user);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  };
+
   const userContextData = {
     user,
+    loginThirdParty,
     orders,
     favoriteList,
     setCurUser,

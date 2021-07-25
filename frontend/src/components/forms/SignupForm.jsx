@@ -55,7 +55,7 @@ export default function SignupForm({ onRegisterSuccess }) {
               type="text"
               id="form3Example1"
               className="form-control"
-              name="firstname"
+              name="first_name"
               onChange={onInputChange}
             />
             <label className="form-label" htmlFor="form3Example1">
@@ -69,7 +69,7 @@ export default function SignupForm({ onRegisterSuccess }) {
               type="text"
               id="form3Example2"
               className="form-control"
-              name="lastname"
+              name="last_name"
               onChange={onInputChange}
             />
             <label className="form-label" htmlFor="form3Example2">

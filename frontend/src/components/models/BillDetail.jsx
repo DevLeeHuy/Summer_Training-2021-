@@ -2,7 +2,7 @@ import React from "react";
 
 export default function BillDetail({ bill }) {
   const { customer, list_product, total } = bill || {};
-  const { firstname, lastname, phone } = customer || {};
+  const { first_name, last_name, phone } = customer || {};
   return (
     <div
       className=" my-container container  mt-3 mb-3  p-4 "
@@ -11,7 +11,7 @@ export default function BillDetail({ bill }) {
       <h1 className="text-center">RECEIPT</h1>
       <hr />
       <div className="text-center">
-        <h3>Customer: {firstname + " " + lastname}</h3>
+        <h3>Customer: {first_name + " " + last_name}</h3>
         <span>
           Phone: <b>{phone}</b>
         </span>

@@ -2,10 +2,16 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 
+//Config Environment variables
 require("dotenv").config();
-const db = require("./configs/db/db");
 
+//Config Database
+require("./configs/db/db");
+
+//General Config
 require("./middlewares/config.mdw")(app);
+
+require("./middlewares/passport.mdw");
 
 app.use("/", require("./routers/index"));
 
