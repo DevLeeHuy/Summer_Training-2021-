@@ -20,7 +20,7 @@ const User = new schema({
   auth: {
     type: {
       type: String,
-      enum: ["local", "google-plus", "facebook"],
+      enum: ["local", "google", "facebook"],
       default: "local",
     },
     id: { type: String },

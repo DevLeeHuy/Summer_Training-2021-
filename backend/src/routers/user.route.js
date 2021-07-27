@@ -14,9 +14,10 @@ router.post(
   passport.authenticate("facebook-token", { session: false }),
   userCtrl.authThirdParty
 );
+
 router.post(
   "/auth/google",
-  passport.authenticate("google-plus-token", { session: false }),
+  passport.authenticate("google-token", { session: false, scope: "photos" }),
   userCtrl.authThirdParty
 );
 

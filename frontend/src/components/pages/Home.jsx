@@ -5,8 +5,8 @@ import ProductList from "../models/ProductList";
 import Pagination from "../partials/Pagination";
 import ProductSidebar from "../partials/ProductSidebar";
 
-export default function Home(props) {
-  const { filters, setFilters, setDefaultFilters, productList, numOfPages } =
+export default function Home() {
+  const { filters, setFilters, setDefaultFilters, productList } =
     useContext(ProductListContext);
 
   function handleSearchClick(text) {
@@ -14,10 +14,6 @@ export default function Home(props) {
   }
   function handleClearClick() {
     setDefaultFilters();
-  }
-
-  function handleChangePage(curPage) {
-    setFilters({ ...filters, page: curPage });
   }
 
   return (
@@ -81,10 +77,7 @@ export default function Home(props) {
             )}
             <ProductList productList={productList} />
             <div className="pagination d-flex justify-content-end p-4 ">
-              <Pagination
-                onPageChange={handleChangePage}
-                numOfPages={numOfPages}
-              />
+              <Pagination />
             </div>
           </div>
         </div>

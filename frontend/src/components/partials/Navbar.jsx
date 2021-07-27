@@ -3,13 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 import logo from "../../images/logo.png";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { getUserImgUrl } from "../../configs/images";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import GoogleLogin from "react-google-login";
 
 export default function Navbar() {
   const { user, unSetCurUser, loginThirdParty } = useContext(UserContext);
   const { shoppingCart } = useContext(CartContext);
-  const IMG_URL = process.env.REACT_APP_USER_IMAGES_URL;
   function handleLogoutClick() {
     unSetCurUser();
   }
@@ -103,7 +103,7 @@ export default function Navbar() {
           </div>
         ) : (
           // LOGIN & REGISTER side🔐
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center ">
             <NavLink
               className="btn btn-outline-light  px-3 me-2"
               to="/account?page=0"
@@ -127,6 +127,21 @@ export default function Navbar() {
                   <i className="fab fa-facebook"></i>
                 </button>
               )}
+            />
+
+            <GoogleLogin
+              clientId="1078271206904-ja2kkh495m23u83jtsip584coqbe1828.apps.googleusercontent.com"
+              render={(renderProps) => (
+                <button
+                  className="btn text-white px-3 ms-1"
+                  style={{ backgroundColor: "#BF360C" }}
+                  onClick={renderProps.onClick}
+                >
+                  <i className="fab fa-google"></i>
+                </button>
+              )}
+              onSuccess={loginThirdParty.google}
+              onFailure={loginThirdParty.google}
             />
           </div>
         )}

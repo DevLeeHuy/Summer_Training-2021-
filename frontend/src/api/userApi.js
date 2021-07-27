@@ -7,8 +7,8 @@ export default Object.assign({
   loginByFacebook: function (access_token) {
     return axiosClient.post(url + "/auth/facebook", { access_token });
   },
-  loginByGoogle: function () {
-    return axiosClient.post(url + "/auth/google");
+  loginByGoogle: function (access_token) {
+    return axiosClient.post(url + "/auth/google", { access_token });
   },
   register: function (body) {
     return axiosClient.post(url, body);

@@ -87,13 +87,14 @@ export default function UserContextProvider(props) {
         console.log(err.message);
       }
     },
-    google: async () => {
+    google: async ({ accessToken }) => {
       try {
-        const response = await userApi.loginByGoogle();
+        const response = await userApi.loginByGoogle(accessToken);
         if (response.success) setCurUser(response.user);
       } catch (err) {
         console.log(err);
       }
+      // console.log(accessToken);
     },
   };
 

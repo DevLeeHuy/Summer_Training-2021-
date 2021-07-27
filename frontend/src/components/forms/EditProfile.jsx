@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import userApi from "../../api/userApi";
-import $ from "jquery";
 import Success from "../alerts/Success";
 import { getUserImgUrl } from "../../configs/images";
 

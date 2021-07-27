@@ -11,4 +11,14 @@ export default Object.assign({
   getProducts: function (params) {
     return axiosClient.get(url, { params });
   },
+  add: function (body) {
+    return axiosClient.post(url, body);
+  },
+
+  update: function (body) {
+    return axiosClient.put(url + `/${body.productId}`, body);
+  },
+  remove: function (productId) {
+    return axiosClient.delete(url + `/${productId}`);
+  },
 });

@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { ProductListContext } from "../contexts/ProductListContext";
 
-export default function Pagination({ onPageChange, numOfPages }) {
+export default function Pagination() {
+  const { filters, setFilters, numOfPages } = useContext(ProductListContext);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -19,6 +21,10 @@ export default function Pagination({ onPageChange, numOfPages }) {
   function handleNextPage() {
     const nextPage = page + 1;
     setPage(nextPage);
+  }
+
+  function onPageChange(curPage) {
+    setFilters({ ...filters, page: curPage });
   }
   return (
     <nav aria-label="...">

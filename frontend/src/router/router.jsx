@@ -1,5 +1,5 @@
-import React from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import Navbar from "../components/partials/Navbar";
 import Footer from "../components/partials/Footer";
 import Home from "../components/pages/Home";
@@ -10,16 +10,18 @@ import AdminPage from "../components/pages/AdminPage";
 import ThankyouPage from "../components/pages/ThankyouPage";
 import Profile from "../components/pages/Profile";
 import FavoriteListPage from "../components/pages/FavoriteListPage";
+import { UserContext } from "../components/contexts/UserContext";
 
 export default function MainRouter() {
   const location = useLocation();
+  const { user } = useContext(UserContext);
   return (
     <>
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
 
-        <Route exact path="/admin" component={AdminPage} />
+        {/* <Route exact path="/admin" component={AdminPage} /> */}
 
         <Route exact path="/account" component={Login} />
         <Route path="/profile" component={Profile} />
@@ -30,8 +32,19 @@ export default function MainRouter() {
         <Route exact path="/shopping-cart" component={ShoppingCart} />
 
         <Route exact path="/thankyou" component={ThankyouPage} />
+
+        <Route
+          path="/admin"
+          render={() =>
+            user.admin ? (
+              <AdminPage />
+            ) : (
+              <Redirect to={{ pathname: "/account" }} />
+            )
+          }
+        />
       </Switch>
-      {location.pathname !== "/admin" && <Footer />}
+      {!location.pathname.startsWith("/admin") && <Footer />}
     </>
   );
 }
