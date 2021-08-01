@@ -11,8 +11,17 @@ const Product = new schema(
     name: { type: String },
     category: { type: Object },
     description: { type: String },
-    image: { type: String },
+    image: {
+      thumbnail: { type: String, required: true },
+      photos: [{ type: String }],
+    },
+    quantity: {
+      S: { type: Number, default: 1 },
+      M: { type: Number, default: 1 },
+      L: { type: Number, default: 1 },
+    },
     price: { type: Number },
+
     rating: { type: rating },
   },
   {

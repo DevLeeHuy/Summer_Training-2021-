@@ -13,30 +13,63 @@ module.exports = {
   create: async function (req, res) {
     const newCategory = new Category(req.body);
     try {
-      if (req.body.ofCategory) {
+      //Add child category
+      if (req.body.parentCategoryId) {
         newCategory.subCategory = undefined;
-        const topCate = await Category.findById(req.body.ofCategory);
+        const topCate = await Category.findById(req.body.parentCategoryId);
+
+        //Check existence
+        const isExistedCategory = topCate.subCategory.find(
+          (cate) => cate.name === newCategory.name
+        );
+        if (isExistedCategory) {
+          return res.status(400).json({ message: "Category already exists" });
+        }
         topCate.subCategory.push(newCategory);
         await topCate.save();
-      } else await newCategory.save();
-      res.status(201).json(newCategory);
+      }
+      //Add parent category
+      else {
+        //Check existence
+        const isExistedCategory = await Category.findOne({
+          name: newCategory.name,
+        });
+        if (!!isExistedCategory) {
+          return res.status(400).json({ message: "Category already exists" });
+        }
+        await newCategory.save();
+      }
+      res.status(201).json({ newCategory });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
   },
   update: async function (req, res) {
-    const category = req.body;
+    const { categoryId, parentCategoryId, name } = req.body;
     try {
-      await Category.updateOne({ _id: req.params.id }, category);
-      res.status(201).json({ message: "Successfully" });
+      if (parentCategoryId) {
+        await Category.updateOne(
+          { "subCategory._id": categoryId },
+          { $set: { "subCategory.$.name": name } }
+        );
+      }
+      await Category.updateOne({ _id: categoryId }, { name });
+      res.status(201).json({ success: true });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
   },
   delete: async function (req, res) {
+    const { categoryId, parentCategoryId } = req.body;
     try {
-      await Category.deleteOne({ _id: req.params.id });
-      res.status(201).json({ message: "Successfully" });
+      if (parentCategoryId) {
+        await Category.updateOne(
+          { _id: parentCategoryId },
+          { $pull: { subCategory: { _id: categoryId } } }
+        );
+      } else await Category.deleteOne({ _id: categoryId });
+
+      res.status(201).json({ success: true });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }

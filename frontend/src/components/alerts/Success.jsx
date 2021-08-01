@@ -26,8 +26,8 @@ export default function Success({ isSuccess, message }) {
           maxHeight: "300px",
           maxWidth: "300px",
           backgroundColor: "white",
-          boxShadow: "3px 5px 5px #F2F2F2",
-          zIndex: "1",
+          boxShadow: "0px 5px 8px #cccccc",
+          zIndex: "9999",
         }}
       >
         <i
@@ -36,7 +36,7 @@ export default function Success({ isSuccess, message }) {
         ></i>
         <hr />
         <span>
-          {message}
+          {message && message + " "}
           <strong>Success</strong>
         </span>
       </div>

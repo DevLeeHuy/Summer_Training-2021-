@@ -3,15 +3,18 @@ import { useHistory, useParams } from "react-router-dom";
 import productApi from "../../api/productApi";
 import { CartContext } from "../contexts/CartContext";
 import Success from "../alerts/Success";
+import { getProductImgUrl } from "../../configs/images";
 
 export default function ProductDetail(props) {
+  const { addToCart } = useContext(CartContext);
+  const productId = useParams().id;
+  const history = useHistory();
+
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { addToCart } = useContext(CartContext);
-  const productId = useParams().id;
-  const history = useHistory();
+  const [preview, setPreview] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -38,6 +41,9 @@ export default function ProductDetail(props) {
       history.push("/shopping-cart");
     });
   }
+  function onChangePreview(e) {
+    setPreview(e.target.src);
+  }
 
   return (
     <section className="mb-5 d-flex justify-content-center position-relative">
@@ -50,16 +56,11 @@ export default function ProductDetail(props) {
               <div className="row product-gallery mx-1">
                 <div className="col-12 mb-0">
                   <figure className="view overlay rounded z-depth-1 main-img">
-                    <a
-                      href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
-                      data-size="710x823"
-                    >
-                      <img
-                        alt="Ảnh sản phẩm"
-                        src={product.image}
-                        className="img-fluid z-depth-1 w-100"
-                      />
-                    </a>
+                    <img
+                      alt="Ảnh sản phẩm"
+                      src={preview || getProductImgUrl(product.image.thumbnail)}
+                      className="img-fluid z-depth-1 w-100"
+                    />
                   </figure>
                 </div>
                 <div className="col-12">
@@ -68,42 +69,28 @@ export default function ProductDetail(props) {
                       <div className="view overlay rounded z-depth-1 gallery-item">
                         <img
                           alt="Ảnh sản phẩm"
-                          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"
+                          role="button"
+                          src={getProductImgUrl(product.image.thumbnail)}
                           className="img-fluid"
+                          onClick={onChangePreview}
                         />
                         {/* <div className="mask rgba-white-slight" /> */}
                       </div>
                     </div>
-                    <div className="col-3">
-                      <div className="view overlay rounded z-depth-1 gallery-item">
-                        <img
-                          alt="Ảnh sản phẩm"
-                          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
-                          className="img-fluid"
-                        />
-                        {/* <div className="mask rgba-white-slight" /> */}
+                    {product.image.photos?.map((photo, index) => (
+                      <div key={index} className="col-3">
+                        <div className="view overlay rounded z-depth-1 gallery-item">
+                          <img
+                            alt="Ảnh sản phẩm"
+                            role="button"
+                            src={getProductImgUrl(photo)}
+                            className="img-fluid"
+                            onClick={onChangePreview}
+                          />
+                          {/* <div className="mask rgba-white-slight" /> */}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-3">
-                      <div className="view overlay rounded z-depth-1 gallery-item">
-                        <img
-                          alt="Ảnh sản phẩm"
-                          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"
-                          className="img-fluid"
-                        />
-                        {/* <div className="mask rgba-white-slight" /> */}
-                      </div>
-                    </div>
-                    <div className="col-3">
-                      <div className="view overlay rounded z-depth-1 gallery-item">
-                        <img
-                          alt="Ảnh sản phẩm"
-                          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
-                          className="img-fluid"
-                        />
-                        {/* <div className="mask rgba-white-slight" /> */}
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -117,9 +104,9 @@ export default function ProductDetail(props) {
             <div className="rating">
               {[...Array(5)].map((e, index) =>
                 index < product.rating.star ? (
-                  <i className="fas fa-star fa-sm text-primary" key={index} />
+                  <i className="fas fa-star fa-sm text-warning" key={index} />
                 ) : (
-                  <i className="far fa-star fa-sm text-primary" key={index} />
+                  <i className="far fa-star fa-sm text-warning" key={index} />
                 )
               )}
             </div>
@@ -129,12 +116,7 @@ export default function ProductDetail(props) {
                 <strong>${product.price}</strong>
               </span>
             </p>
-            <p className="pt-1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam,
-              sapiente illo. Sit error voluptas repellat rerum quidem, soluta
-              enim perferendis voluptates laboriosam. Distinctio, officia quis
-              dolore quos sapiente tempore alias.
-            </p>
+            <p className="pt-1">{product.description}</p>
             <div className="table-responsive">
               <table className="table table-sm table-borderless mb-0">
                 <tbody>
@@ -233,14 +215,14 @@ export default function ProductDetail(props) {
             </div>
             <button
               type="button"
-              className="btn btn-primary btn-md mr-1 mb-2"
+              className="btn btn-dark btn-md  mb-2"
               onClick={handleBuyNowClick}
             >
               Buy now
             </button>
             <button
               type="button"
-              className="btn btn-light btn-md mr-1 mb-2"
+              className="btn btn-light btn-md ms-1 mb-2"
               onClick={handleAddToCart}
             >
               <i className="fas fa-shopping-cart pr-2" />

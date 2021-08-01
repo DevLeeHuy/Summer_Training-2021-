@@ -42,7 +42,7 @@ export default function ProductItem(props) {
 
       <img
         className="img-fluid w-100"
-        src={getProductImgUrl(product.image)}
+        src={getProductImgUrl(product.image.thumbnail)}
         alt="Sample"
       />
       <div className="text-center pt-4">
@@ -81,16 +81,17 @@ export default function ProductItem(props) {
           </NavLink>
           <button
             type="button"
-            className="btn btn-danger btn-sm px-3 mb-2 material-tooltip-main"
+            className="btn btn-danger btn-sm  px-3 py-1 mb-2 material-tooltip-main"
             data-toggle="tooltip"
             data-placement="top"
             title="Add to wishlist"
             onClick={handleLikeClick}
           >
             {like ? (
-              <i className="fas fa-heart" />
+              // <i className="fas fa-heart" />
+              <span style={{ fontSize: "14px" }}>❤️</span>
             ) : (
-              <i className="far fa-heart"></i>
+              <span style={{ fontSize: "12px" }}>🤍</span>
             )}
           </button>
         </div>

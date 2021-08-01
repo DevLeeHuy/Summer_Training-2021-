@@ -13,7 +13,7 @@ export default function AdminSidebar({ url }) {
             className="list-group-item list-group-item-action py-2 "
             aria-current="true"
           >
-            <i className="fas fa-tachometer-alt fa-fw me-3"></i>
+            <span className="me-3">🕹️</span>
             <span>Main dashboard</span>
           </NavLink>
           <NavLink
@@ -21,7 +21,7 @@ export default function AdminSidebar({ url }) {
             activeClassName="active"
             className="list-group-item list-group-item-action py-2   "
           >
-            <i className="fas fa-chart-area fa-fw me-3"></i>
+            <span className="me-3">📦</span>
             <span>Manage products</span>
           </NavLink>
           <NavLink
@@ -29,7 +29,7 @@ export default function AdminSidebar({ url }) {
             activeClassName="active"
             className="list-group-item list-group-item-action py-2  "
           >
-            <i className="fas fa-lock fa-fw me-3"></i>
+            <span className="me-3">🧑‍💻</span>
             <span>Manage users</span>
           </NavLink>
           <NavLink
@@ -37,7 +37,7 @@ export default function AdminSidebar({ url }) {
             activeClassName="active"
             className="list-group-item list-group-item-action py-2  "
           >
-            <i className="fas fa-lock fa-fw me-3"></i>
+            <span className="me-3">💬</span>
             <span>Reviews</span>
           </NavLink>
           <NavLink
@@ -45,7 +45,7 @@ export default function AdminSidebar({ url }) {
             activeClassName="active"
             className="list-group-item list-group-item-action py-2  "
           >
-            <i className="fas fa-lock fa-fw me-3"></i>
+            <span className="me-3">🎟️</span>
             <span>Vouchers</span>
           </NavLink>
         </div>

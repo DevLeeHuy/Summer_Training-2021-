@@ -1,8 +1,8 @@
 const Product = require("../models/Product.model");
 const Category = require("../models/Category.model");
 
-var PAGE_SIZE = 2;
-var skipItem = 0;
+let PAGE_SIZE = 2;
+let skipItem = 0;
 async function handleCondition(condition) {
   //Search by Name
   if (condition.name) {
@@ -51,31 +51,69 @@ module.exports = {
           .skip(skipItem)
           .limit(PAGE_SIZE);
       } else listProduct = await Product.find();
-      res.status(200).json(listProduct);
+      const numOfProducts = await Product.countDocuments();
+      const numOfPages = Math.ceil(numOfProducts / PAGE_SIZE);
+      res.status(200).json({ listProduct, numOfPages });
     } catch (err) {
       console.log(err);
       res.status(404).json({ message: err.message });
     }
   },
   create: async function (req, res) {
-    const product = req.body;
-    const newProduct = new Product(product);
-    newProduct.rating = {
-      num_of_reviewers: 0,
-      star: 0,
+    const parentCategory = await Category.findById(req.body.parentCategory);
+    const category = req.body.category
+      ? parentCategory.subCategory.id(req.body.category)
+      : parentCategory; //If did not have sub set parent cate for category
+    const product = {
+      ...req.body,
+      rating: { num_of_reviewers: 0, star: 0 },
+      image: {
+        thumbnail:
+          req.files.thumbnail?.length > 0
+            ? req.files.thumbnail[0].filename
+            : "default-product.png",
+        photos: req.files.images?.map((img) => img.filename),
+      },
+      category: category,
     };
+    const newProduct = new Product(product);
     try {
       await newProduct.save();
-      res.status(201).json(newProduct);
+      res.status(201).json({ success: true, newProduct });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
   },
   update: async function (req, res) {
-    const product = req.body;
+    let product = req.body;
+
+    // Check update thumbnail and photos
+    if (req.files.thumbnail?.length > 0) {
+      product = {
+        ...product,
+        "image.thumbnail": req.files.thumbnail[0].filename,
+      };
+    }
+    if (req.files.images?.length > 0) {
+      product = {
+        ...product,
+        "image.photos": req.files.images?.map((img) => img.filename),
+      };
+    }
+    //Check update category
+    if (product.parentCategory || product.category) {
+      const parentCategory = await Category.findById(req.body.parentCategory);
+      const category = req.body.category
+        ? parentCategory.subCategory.id(req.body.category)
+        : parentCategory;
+      product = {
+        ...product,
+        category,
+      };
+    }
     try {
       await Product.updateOne({ _id: req.params.id }, product);
-      res.status(201).json({ message: "Successfully" });
+      res.status(201).json({ success: true });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
@@ -83,7 +121,7 @@ module.exports = {
   delete: async function (req, res) {
     try {
       await Product.deleteOne({ _id: req.params.id });
-      res.status(201).json({ message: "Successfully" });
+      res.status(201).json({ success: true });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }

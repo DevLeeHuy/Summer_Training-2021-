@@ -12,7 +12,7 @@ function storage(name) {
         return callback(message, null);
       }
 
-      var filename = `${Date.now()}--${file.originalname}`;
+      var filename = `${file.originalname}`;
       callback(null, filename);
     },
   });

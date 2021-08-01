@@ -27,10 +27,10 @@ function Category({ item }) {
           onClick={categoryOnClick}
         >
           <span>{item.name}</span>
-          <span className=" badge badge-secondary round">142</span>
+          {/* <span className=" badge badge-secondary round">142</span> */}
         </div>
         <span
-          className="position-absolute list-btn ps-2 h-100 "
+          className="position-absolute list-btn ps-2 h-100 ripple"
           role="button"
           data-mdb-toggle="collapse"
           data-mdb-target={"#" + item.name}

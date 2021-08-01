@@ -15,8 +15,8 @@ export default Object.assign({
     return axiosClient.post(url, body);
   },
 
-  update: function (body) {
-    return axiosClient.put(url + `/${body.productId}`, body);
+  update: function (body, id) {
+    return axiosClient.put(url + `/${id}`, body);
   },
   remove: function (productId) {
     return axiosClient.delete(url + `/${productId}`);

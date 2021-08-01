@@ -53,7 +53,7 @@ export default function Navbar() {
           <div className="d-flex align-items-center">
             {/* SHOPPING CART 🛒 */}
             <Link className="text-light me-3" to="/shopping-cart">
-              <i className="fas fa-shopping-cart" />
+              <span style={{ fontSize: "20px" }}>🛒</span>
               <span className="badge rounded-pill badge-notification bg-danger">
                 {shoppingCart.length}
               </span>
@@ -61,7 +61,7 @@ export default function Navbar() {
 
             {/* USER PROFILE 🧔 */}
             <a
-              className="dropdown-toggle d-flex align-items-center hidden-arrow"
+              className="dropdown-toggle d-flex align-items-center hidden-arrow me-2"
               href="/"
               id="navbarDropdownMenuLink"
               role="button"
@@ -71,15 +71,22 @@ export default function Navbar() {
               <img
                 src={getUserImgUrl(user.picture)}
                 className="rounded-circle"
-                height={25}
+                height={30}
                 alt="avatar"
                 loading="lazy"
               />
             </a>
             <ul
-              className="dropdown-menu dropdown-menu-end dropdown-menu-dark "
+              className="dropdown-menu dropdown-menu-end dropdown-menu-dark me-2"
               aria-labelledby="navbarDropdownMenuLink"
             >
+              {user.admin && (
+                <li>
+                  <Link className="dropdown-item " to="/admin">
+                    🧑‍💼 Admin page
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link className="dropdown-item " to="/profile">
                   🗃️ My profile

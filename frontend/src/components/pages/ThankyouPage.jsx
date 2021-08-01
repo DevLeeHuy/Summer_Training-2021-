@@ -21,16 +21,17 @@ export default function ThankyouPage() {
       <div className="text-center">
         <h1 style={style.header}>THANK YOU!</h1>
         <i
-          class="fa fa-check main-content__checkmark"
+          className="fa fa-check main-content__checkmark"
           id="checkmark"
           style={style.icon}
         ></i>
         <hr />
         <p>
-          You can see your bill details below <i class="fas fa-arrow-down"></i>
+          You can see your bill details below{" "}
+          <i className="fas fa-arrow-down"></i>
         </p>
       </div>
-      <div class="main-content"></div>
+      <div className="main-content"></div>
       <BillDetail bill={bill} />
     </div>
   );

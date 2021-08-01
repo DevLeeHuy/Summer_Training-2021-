@@ -5,30 +5,41 @@ import CategoryList from "../models/CategoryList";
 export default function ProductSidebar() {
   return (
     <div
-      className="product-sidebar-content "
+      className="product-sidebar-content"
       style={{ borderRight: "1px solid #e0e0e0" }}
     >
       <div className="card">
-        <article className="card-group-item">
-          <header
-            className="card-header "
-            style={{ backgroundColor: "#EBEBEB" }}
-          >
+        <div className="card-group-item">
+          <div className="card-header " style={{ backgroundColor: "#EBEBEB" }}>
             <h6 className="title">Similar category </h6>
-          </header>
+            {/* <button
+              className="btn"
+              data-mdb-toggle="collapse"
+              data-mdb-target="#test"
+              aria-expanded="false"
+              aria-controls="test"
+            >
+              TEST
+            </button>
+
+            <div className="collapse" id="test">
+              <ul className=" list-unstyled fw-normal pb-1 small mt-1 mb-0 ">
+                <li>test</li>
+                <li>test</li>
+                <li>test</li>
+              </ul>
+            </div> */}
+          </div>
           <div className="filter-content">
             <CategoryList />
             {/* list-group .// */}
           </div>
-        </article>
+        </div>
         {/* card-group-item.// */}
-        <article className="card-group-item">
-          <header
-            className="card-header"
-            style={{ backgroundColor: "#EBEBEB" }}
-          >
+        <div className="card-group-item">
+          <div className="card-header" style={{ backgroundColor: "#EBEBEB" }}>
             <h6 className="title">Range input </h6>
-          </header>
+          </div>
           <div className="filter-content">
             <div className="card-body">
               <div className="form-row">
@@ -37,7 +48,7 @@ export default function ProductSidebar() {
             </div>
             {/* card-body.// */}
           </div>
-        </article>
+        </div>
         {/* card-group-item.// */}
       </div>
     </div>

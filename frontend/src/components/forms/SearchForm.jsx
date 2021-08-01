@@ -26,10 +26,11 @@ export default function SearchForm(props) {
       </div>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-primary px-3 py-1"
         onClick={() => props.onSearchClick(searchInput)}
       >
-        <i className="fas fa-search" />
+        {/* <i className="fas fa-search" /> */}
+        <span style={{ fontSize: "18px" }}>🔍</span>
       </button>
       <button
         type="button"

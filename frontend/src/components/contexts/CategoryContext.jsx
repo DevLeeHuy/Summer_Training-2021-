@@ -6,16 +6,19 @@ export const CategoryContext = React.createContext();
 export default function CategoryContextProvider(props) {
   const [categoryList, setCategoryList] = useState([]);
   useEffect(() => {
-    (async () => {
-      try {
-        const categories = await categoryApi.getAll();
-        setCategoryList(categories);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    getCategoryList();
   }, []);
-  const CategoryData = { categoryList };
+
+  const getCategoryList = async () => {
+    try {
+      const categories = await categoryApi.getAll();
+      setCategoryList(categories);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const CategoryData = { categoryList, getCategoryList };
   return (
     <CategoryContext.Provider value={CategoryData}>
       {props.children}

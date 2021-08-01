@@ -58,7 +58,7 @@ export default function CartItem({ item }) {
         <div className="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
           <img
             className="img-fluid w-100"
-            src={getProductImgUrl(product.image)}
+            src={getProductImgUrl(product.image.thumbnail)}
             alt="Sample"
           />
         </div>
